@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz - InsideKidney</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="medical-theme page-quiz">
+
+  <!-- Top Navigation -->
+  <header class="top-nav">
+    <div class="brand">
+      <span class="icon">🫘</span>
+      <h1>InsideKidney</h1>
+    </div>
+    <nav class="main-links">
+      <a href="index.html">Home</a>
+      <a href="viewer.html">3D Explorer</a>
+      <a href="quiz.html" class="active">Quiz</a>
+    </nav>
+  </header>
+
+  <!-- Quiz Section -->
+  <main class="quiz-section">
+    <div class="quiz-container glass-panel" id="quiz-container">
+      <div class="quiz-header">
+        <h2>Kidney Anatomy & Function Quiz</h2>
+        <span id="quiz-progress" class="badge">Question 1 / 5</span>
+      </div>
+      
+      <div id="quiz-body">
+        <h3 id="question-text" class="question-text">Loading question...</h3>
+        <div id="options-container" class="options-grid">
+          <!-- Options injected by JS -->
+        </div>
+      </div>
+
+      <div id="quiz-result" class="hidden">
+        <h3 class="result-title">Quiz Complete!</h3>
+        <p class="result-score">You scored <span id="score-display">0</span> out of <span id="total-display">0</span>.</p>
+        <button id="btn-restart" class="btn btn-primary">Try Again</button>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="src/ui/quiz.js"></script>
+</body>
+</html>

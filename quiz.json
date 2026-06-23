@@ -1,0 +1,27 @@
+[
+  {
+    "question": "What is the primary functional unit of the kidney?",
+    "options": ["Glomerulus", "Nephron", "Renal Pelvis", "Ureter"],
+    "answer": 1
+  },
+  {
+    "question": "Which structure is responsible for the initial filtration of blood?",
+    "options": ["Loop of Henle", "Collecting Duct", "Glomerulus", "Distal Tubule"],
+    "answer": 2
+  },
+  {
+    "question": "Where does the majority of water and solute reabsorption occur?",
+    "options": ["Proximal Tubule", "Bowman's Capsule", "Distal Tubule", "Renal Vein"],
+    "answer": 0
+  },
+  {
+    "question": "Which part of the kidney contains the loops of Henle?",
+    "options": ["Renal Cortex", "Renal Pelvis", "Renal Capsule", "Renal Medulla"],
+    "answer": 3
+  },
+  {
+    "question": "What hormone primarily controls the permeability of the collecting duct to water?",
+    "options": ["Insulin", "Antidiuretic Hormone (ADH)", "Erythropoietin", "Adrenaline"],
+    "answer": 1
+  }
+]

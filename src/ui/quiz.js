@@ -1,0 +1,118 @@
+let quizData = [];
+let currentQuestionIndex = 0;
+let score = 0;
+
+async function loadQuizData() {
+  const response = await fetch('quiz.json', { cache: 'no-store' });
+
+  if (!response.ok) {
+    throw new Error(`Unable to load quiz.json (${response.status})`);
+  }
+
+  const data = await response.json();
+  validateQuizData(data);
+  quizData = data;
+}
+
+function validateQuizData(data) {
+  if (!Array.isArray(data) || data.length === 0) {
+    throw new Error('quiz.json must contain at least one question.');
+  }
+
+  data.forEach((item, index) => {
+    const questionNumber = index + 1;
+    const hasQuestion = typeof item.question === 'string' && item.question.trim();
+    const hasOptions = Array.isArray(item.options) && item.options.length >= 2;
+    const hasValidAnswer =
+      Number.isInteger(item.answer) &&
+      hasOptions &&
+      item.answer >= 0 &&
+      item.answer < item.options.length;
+
+    if (!hasQuestion || !hasOptions || !hasValidAnswer) {
+      throw new Error(
+        `Invalid question ${questionNumber}. Each item needs question, options, and a valid answer index.`
+      );
+    }
+  });
+}
+
+function showQuizError(message) {
+  const questionText = document.getElementById('question-text');
+  const optionsContainer = document.getElementById('options-container');
+  const progressText = document.getElementById('quiz-progress');
+
+  questionText.textContent = message;
+  optionsContainer.innerHTML = '';
+  progressText.textContent = 'Quiz unavailable';
+}
+
+function loadQuestion() {
+  const quizBody = document.getElementById('quiz-body');
+  const quizResult = document.getElementById('quiz-result');
+  const questionText = document.getElementById('question-text');
+  const optionsContainer = document.getElementById('options-container');
+  const progressText = document.getElementById('quiz-progress');
+
+  if (currentQuestionIndex >= quizData.length) {
+    // Show results
+    quizBody.classList.add('hidden');
+    quizResult.classList.remove('hidden');
+    document.getElementById('score-display').textContent = score;
+    document.getElementById('total-display').textContent = quizData.length;
+    progressText.textContent = "Completed";
+    return;
+  }
+
+  const q = quizData[currentQuestionIndex];
+  questionText.textContent = q.question;
+  progressText.textContent = `Question ${currentQuestionIndex + 1} / ${quizData.length}`;
+  
+  optionsContainer.innerHTML = '';
+  q.options.forEach((opt, index) => {
+    const btn = document.createElement('button');
+    btn.className = 'btn-option';
+    btn.textContent = opt;
+    btn.onclick = () => handleAnswer(index, q.answer, btn);
+    optionsContainer.appendChild(btn);
+  });
+}
+
+function handleAnswer(selectedIndex, correctIndex, btnElement) {
+  // Disable all buttons
+  const buttons = document.querySelectorAll('.btn-option');
+  buttons.forEach(b => b.disabled = true);
+
+  if (selectedIndex === correctIndex) {
+    btnElement.classList.add('correct');
+    score++;
+  } else {
+    btnElement.classList.add('wrong');
+    buttons[correctIndex].classList.add('correct');
+  }
+
+  setTimeout(() => {
+    currentQuestionIndex++;
+    loadQuestion();
+  }, 1500);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const restartBtn = document.getElementById('btn-restart');
+  if (restartBtn) {
+    restartBtn.onclick = () => {
+      currentQuestionIndex = 0;
+      score = 0;
+      document.getElementById('quiz-body').classList.remove('hidden');
+      document.getElementById('quiz-result').classList.add('hidden');
+      loadQuestion();
+    };
+  }
+  
+  loadQuizData()
+    .then(loadQuestion)
+    .catch((error) => {
+      console.error(error);
+      showQuizError('Quiz data failed to load. Check quiz.json format and run this page from a local server.');
+    });
+});

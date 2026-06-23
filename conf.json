@@ -1,0 +1,177 @@
+[
+  {
+    "id": 0,
+    "name": "Urinary Collecting System",
+    "category": "Excretion",
+    "color": "#ff4d6d",
+    "icon": "💧",
+    "description": "The urinary collecting system consists of structures that collect and transport urine from the kidney to the outside of the body, including the renal calyces, renal pelvis, ureters, urinary bladder, and urethra.",
+    "facts": [
+      "Collects urine produced by over 1 million nephrons in each kidney.",
+      "The ureters are about 25–30 cm long and use peristalsis to move urine.",
+      "The urinary bladder can hold up to 400–600 mL of urine.",
+      "The system is lined with transitional epithelium (urothelium) that can stretch."
+    ],
+    "cameraTarget": [
+      0,
+      0,
+      5
+    ],
+    "labelOffset": [
+      0.025,
+      1.116,
+      -0.386
+    ],
+    "visible": true
+  },
+  {
+    "id": 1,
+    "name": "Kidney",
+    "category": "Anatomy",
+    "color": "#ff6b6b",
+    "icon": "🫘",
+    "description": "The kidney is a bean-shaped organ responsible for filtering blood, removing metabolic waste products, and regulating fluid and electrolyte balance. Humans have two kidneys located in the retroperitoneal space on either side of the spine.",
+    "facts": [
+      "Each kidney contains approximately 1 million nephrons — the functional units of filtration.",
+      "The kidneys filter around 180 liters of blood per day, producing about 1–2 liters of urine.",
+      "Kidneys also produce hormones like erythropoietin (stimulates red blood cell production) and renin (regulates blood pressure).",
+      "Each kidney is about the size of a fist, weighing 120–150 grams."
+    ],
+    "cameraTarget": [
+      0,
+      0,
+      4
+    ],
+    "labelOffset": [
+      0.696,
+      0.405,
+      0.021
+    ],
+    "visible": true
+  },
+  {
+    "id": 2,
+    "name": "Human Body",
+    "category": "Anatomy",
+    "color": "#f4a261",
+    "icon": "🧍",
+    "description": "The human body is the entire physical structure of a human being. It is composed of many interacting organ systems — including the skeletal, muscular, circulatory, respiratory, digestive, urinary, and nervous systems — all working together to maintain life.",
+    "facts": [
+      "The adult human body contains approximately 37 trillion cells.",
+      "The body is made up of 11 major organ systems.",
+      "Over 60% of the human body's weight is water.",
+      "The body has 206 bones and over 600 muscles."
+    ],
+    "cameraTarget": [
+      0,
+      2,
+      6
+    ],
+    "labelOffset": [
+      0.17,
+      2.113,
+      0.559
+    ],
+    "visible": true
+  },
+  {
+    "id": 3,
+    "name": "Skeletal System",
+    "category": "Structure",
+    "color": "#e9c46a",
+    "icon": "🦴",
+    "description": "The skeletal system is the framework of bones and connective tissues that provides shape, support, and protection to the body. It also works with muscles to enable movement and is the site of blood cell production within the bone marrow.",
+    "facts": [
+      "An adult human has 206 bones; a newborn has around 270, which fuse over time.",
+      "Bone marrow produces red blood cells, white blood cells, and platelets.",
+      "Bones store 99% of the body's calcium and 85% of its phosphorus.",
+      "The femur (thigh bone) is the longest and strongest bone in the body."
+    ],
+    "cameraTarget": [
+      0,
+      1,
+      6
+    ],
+    "labelOffset": [
+      -0.286,
+      0.46,
+      0.667
+    ],
+    "visible": true
+  },
+  {
+    "id": 4,
+    "name": "Vein",
+    "category": "Circulation",
+    "color": "#4361ee",
+    "icon": "🔵",
+    "description": "Veins are blood vessels that carry deoxygenated blood from the body's tissues back to the heart. In the context of the kidney, the renal vein carries filtered, deoxygenated blood from the kidney to the inferior vena cava and then back to the heart.",
+    "facts": [
+      "Veins contain valves that prevent blood from flowing backward.",
+      "About 70% of the body's blood volume is held in the veins at any given time.",
+      "The left renal vein is longer than the right renal vein because the aorta is slightly to the left.",
+      "Veins have thinner walls than arteries because they carry blood at lower pressure."
+    ],
+    "cameraTarget": [
+      -1.5,
+      0,
+      3
+    ],
+    "labelOffset": [
+      0.045,
+      -0.668,
+      0.547
+    ],
+    "visible": true
+  },
+  {
+    "id": 5,
+    "name": "Artery",
+    "category": "Circulation",
+    "color": "#e63946",
+    "icon": "🔴",
+    "description": "Arteries are thick-walled blood vessels that carry oxygenated blood away from the heart to the rest of the body. The renal artery branches directly from the abdominal aorta and delivers unfiltered, oxygen-rich blood to the kidney for processing.",
+    "facts": [
+      "The renal arteries receive about 20–25% of the total cardiac output each minute.",
+      "Arterial walls have three layers: tunica intima, tunica media, and tunica adventitia.",
+      "The thick muscular walls of arteries help withstand the high pressure of blood pumped from the heart.",
+      "Each renal artery divides into segmental arteries, then interlobar, arcuate, and interlobular arteries inside the kidney."
+    ],
+    "cameraTarget": [
+      -2,
+      0.5,
+      3
+    ],
+    "labelOffset": [
+      -0.33,
+      -0.401,
+      0.451
+    ],
+    "visible": true
+  },
+  {
+    "id": 6,
+    "name": "Skeletal",
+    "category": "Structure",
+    "color": "#f0e68c",
+    "icon": "💀",
+    "description": "This model represents the skeletal structure in relation to the urinary system. The spine and surrounding bones provide structural support and protection for the kidneys, which are located in the retroperitoneal space beside the lumbar vertebrae.",
+    "facts": [
+      "The kidneys are protected by the lower rib cage (ribs 11 and 12) and the muscles of the back.",
+      "The lumbar vertebrae (L1–L4) are the closest vertebrae to the kidneys.",
+      "The pelvic bones protect the urinary bladder and lower urinary tract.",
+      "Bone-derived factors influence kidney function through calcium and phosphate regulation."
+    ],
+    "cameraTarget": [
+      0,
+      0,
+      6
+    ],
+    "labelOffset": [
+      -0.471,
+      -1.336,
+      -0.177
+    ],
+    "visible": true
+  }
+]
