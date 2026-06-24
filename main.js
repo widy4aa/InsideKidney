@@ -745,20 +745,24 @@ function focusOnPart(part) {
   if (activeModelGroup) {
     // Dim all models except the focused one
     activeModelGroup.children.forEach(child => {
-      if (!child.material) return;
-      if (child.name === part.name) {
-        // Highlight focused part
-        const def = MODEL_DEFS.find(d => d.name === child.name);
-        if (def) {
-          child.material.opacity = def.opacity;
-          child.material.transparent = def.opacity < 1.0;
+      let isTarget = (child.name === part.name);
+      
+      child.traverse(mesh => {
+        if (!mesh.isMesh || !mesh.material) return;
+        if (isTarget) {
+          // Highlight focused part
+          const def = MODEL_DEFS.find(d => d.name === child.name);
+          if (def) {
+            mesh.material.opacity = def.opacity;
+            mesh.material.transparent = def.opacity < 1.0;
+          }
+        } else {
+          // Dim other parts
+          mesh.material.transparent = true;
+          mesh.material.opacity = 0.1; // Low opacity for spotlight effect
         }
-      } else {
-        // Dim other parts
-        child.material.transparent = true;
-        child.material.opacity = 0.1; // Low opacity for spotlight effect
-      }
-      child.material.needsUpdate = true;
+        mesh.material.needsUpdate = true;
+      });
     });
 
     // Automatically find the actual 3D mesh for this part
@@ -792,12 +796,14 @@ function focusOnPart(part) {
 function clearFocusMode() {
   if (!activeModelGroup) return;
   activeModelGroup.children.forEach(child => {
-    if (!child.material) return;
     const def = MODEL_DEFS.find(d => d.name === child.name);
     if (def) {
-      child.material.opacity = def.opacity;
-      child.material.transparent = def.opacity < 1.0;
-      child.material.needsUpdate = true;
+      child.traverse(mesh => {
+        if (!mesh.isMesh || !mesh.material) return;
+        mesh.material.opacity = def.opacity;
+        mesh.material.transparent = def.opacity < 1.0;
+        mesh.material.needsUpdate = true;
+      });
     }
   });
 }
