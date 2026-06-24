@@ -2,90 +2,24 @@
   {
     "id": 0,
     "name": "Urinary Collecting System",
+    "name_th": "ระบบรวบรวมน้ำปัสสาวะ",
     "category": "Excretion",
+    "category_th": "การขับถ่าย",
     "color": "#ff4d6d",
     "icon": "💧",
     "description": "The urinary collecting system consists of structures that collect and transport urine from the kidney to the outside of the body, including the renal calyces, renal pelvis, ureters, urinary bladder, and urethra.",
+    "description_th": "ระบบรวบรวมน้ำปัสสาวะประกอบด้วยโครงสร้างที่ทำหน้าที่รวบรวมและลำเลียงน้ำปัสสาวะจากไตออกสู่ภายนอกร่างกาย ได้แก่ กรวยไตน้อย กรวยไตใหญ่ กรวยไต ท่อไต กระเพาะปัสสาวะ และท่อปัสสาวะ",
     "facts": [
       "Collects urine produced by over 1 million nephrons in each kidney.",
       "The ureters are about 25–30 cm long and use peristalsis to move urine.",
       "The urinary bladder can hold up to 400–600 mL of urine.",
       "The system is lined with transitional epithelium (urothelium) that can stretch."
     ],
-    "cameraTarget": [
-      0,
-      0,
-      5
-    ],
-    "labelOffset": [
-      0.025,
-      1.116,
-      -0.386
-    ],
-    "visible": true
-  },
-  {
-    "id": 1,
-    "name": "Kidney",
-    "category": "Anatomy",
-    "color": "#ff6b6b",
-    "icon": "🫘",
-    "description": "The kidney is a bean-shaped organ responsible for filtering blood, removing metabolic waste products, and regulating fluid and electrolyte balance. Humans have two kidneys located in the retroperitoneal space on either side of the spine.",
-    "facts": [
-      "Each kidney contains approximately 1 million nephrons — the functional units of filtration.",
-      "The kidneys filter around 180 liters of blood per day, producing about 1–2 liters of urine.",
-      "Kidneys also produce hormones like erythropoietin (stimulates red blood cell production) and renin (regulates blood pressure).",
-      "Each kidney is about the size of a fist, weighing 120–150 grams."
-    ],
-    "cameraTarget": [
-      0,
-      0,
-      4
-    ],
-    "labelOffset": [
-      0.696,
-      0.405,
-      0.021
-    ],
-    "visible": true
-  },
-  {
-    "id": 2,
-    "name": "Human Body",
-    "category": "Anatomy",
-    "color": "#f4a261",
-    "icon": "🧍",
-    "description": "The human body is the entire physical structure of a human being. It is composed of many interacting organ systems — including the skeletal, muscular, circulatory, respiratory, digestive, urinary, and nervous systems — all working together to maintain life.",
-    "facts": [
-      "The adult human body contains approximately 37 trillion cells.",
-      "The body is made up of 11 major organ systems.",
-      "Over 60% of the human body's weight is water.",
-      "The body has 206 bones and over 600 muscles."
-    ],
-    "cameraTarget": [
-      0,
-      2,
-      6
-    ],
-    "labelOffset": [
-      0.17,
-      2.113,
-      0.559
-    ],
-    "visible": true
-  },
-  {
-    "id": 3,
-    "name": "Skeletal System",
-    "category": "Structure",
-    "color": "#e9c46a",
-    "icon": "🦴",
-    "description": "The skeletal system is the framework of bones and connective tissues that provides shape, support, and protection to the body. It also works with muscles to enable movement and is the site of blood cell production within the bone marrow.",
-    "facts": [
-      "An adult human has 206 bones; a newborn has around 270, which fuse over time.",
-      "Bone marrow produces red blood cells, white blood cells, and platelets.",
-      "Bones store 99% of the body's calcium and 85% of its phosphorus.",
-      "The femur (thigh bone) is the longest and strongest bone in the body."
+    "facts_th": [
+      "ทำหน้าที่รวบรวมน้ำปัสสาวะที่ผลิตจากหน่วยไตมากกว่า 1 ล้านหน่วยในไตแต่ละข้าง",
+      "ท่อไตมีความยาวประมาณ 25–30 เซนติเมตร และลำเลียงน้ำปัสสาวะด้วยการหดตัวแบบเพอริสทัลซิส",
+      "กระเพาะปัสสาวะสามารถกักเก็บน้ำปัสสาวะได้ประมาณ 400–600 มิลลิลิตร",
+      "ผนังภายในบุด้วยเนื้อเยื่อบุผิวชนิดแปรเปลี่ยนได้ (Urothelium) ซึ่งสามารถยืดขยายได้ดี"
     ],
     "cameraTarget": [
       0,
@@ -93,24 +27,33 @@
       6
     ],
     "labelOffset": [
-      -0.286,
-      0.46,
-      0.667
+      0.323,
+      7.882,
+      0.795
     ],
     "visible": true
   },
   {
-    "id": 4,
-    "name": "Vein",
-    "category": "Circulation",
-    "color": "#4361ee",
-    "icon": "🔵",
-    "description": "Veins are blood vessels that carry deoxygenated blood from the body's tissues back to the heart. In the context of the kidney, the renal vein carries filtered, deoxygenated blood from the kidney to the inferior vena cava and then back to the heart.",
+    "id": 1,
+    "name": "Kidney",
+    "name_th": "ไต",
+    "category": "Anatomy",
+    "category_th": "กายวิภาค",
+    "color": "#ff6b6b",
+    "icon": "🫘",
+    "description": "The kidney is a bean-shaped organ responsible for filtering blood, removing metabolic waste products, and regulating fluid and electrolyte balance. Humans have two kidneys located in the retroperitoneal space on either side of the spine.",
+    "description_th": "ไตเป็นอวัยวะที่มีรูปร่างคล้ายเมล็ดถั่ว ทำหน้าที่กรองเลือด กำจัดของเสียจากกระบวนการเมแทบอลิซึม และควบคุมสมดุลของน้ำและอิเล็กโทรไลต์ในร่างกาย มนุษย์มีไต 2 ข้าง อยู่บริเวณช่องหลังเยื่อบุช่องท้องทั้งสองข้างของกระดูกสันหลัง",
     "facts": [
-      "Veins contain valves that prevent blood from flowing backward.",
-      "About 70% of the body's blood volume is held in the veins at any given time.",
-      "The left renal vein is longer than the right renal vein because the aorta is slightly to the left.",
-      "Veins have thinner walls than arteries because they carry blood at lower pressure."
+      "Each kidney contains approximately 1 million nephrons — the functional units of filtration.",
+      "The kidneys filter around 180 liters of blood per day, producing about 1–2 liters of urine.",
+      "Kidneys also produce hormones like erythropoietin (stimulates red blood cell production) and renin (regulates blood pressure).",
+      "Each kidney is about the size of a fist, weighing 120–150 grams."
+    ],
+    "facts_th": [
+      "ไตแต่ละข้างประกอบด้วยหน่วยไตประมาณ 1 ล้านหน่วย",
+      "ไตกรองเลือดประมาณ 180 ลิตรต่อวัน และสร้างน้ำปัสสาวะประมาณ 1–2 ลิตร",
+      "ไตสร้างฮอร์โมนสำคัญ เช่น อีริโทรพอยอิติน และเรนิน",
+      "ไตแต่ละข้างมีขนาดประมาณกำปั้น และมีน้ำหนักประมาณ 120–150 กรัม"
     ],
     "cameraTarget": [
       -1.5,
@@ -118,49 +61,33 @@
       3
     ],
     "labelOffset": [
-      0.045,
-      -0.668,
-      0.547
+      0.894,
+      9.852,
+      0.565
     ],
     "visible": true
   },
   {
-    "id": 5,
-    "name": "Artery",
-    "category": "Circulation",
-    "color": "#e63946",
-    "icon": "🔴",
-    "description": "Arteries are thick-walled blood vessels that carry oxygenated blood away from the heart to the rest of the body. The renal artery branches directly from the abdominal aorta and delivers unfiltered, oxygen-rich blood to the kidney for processing.",
+    "id": 2,
+    "name": "Human Body",
+    "name_th": "ร่างกายมนุษย์",
+    "category": "Anatomy",
+    "category_th": "กายวิภาค",
+    "color": "#f4a261",
+    "icon": "🧍",
+    "description": "The human body is the entire physical structure of a human being. It is composed of many interacting organ systems — including the skeletal, muscular, circulatory, respiratory, digestive, urinary, and nervous systems — all working together to maintain life.",
+    "description_th": "ร่างกายมนุษย์ประกอบด้วยระบบอวัยวะหลายระบบที่ทำงานร่วมกันอย่างประสานกัน เพื่อรักษาการดำรงชีวิตและความสมดุลของร่างกาย ได้แก่ ระบบโครงกระดูก ระบบกล้ามเนื้อ ระบบหมุนเวียนเลือด ระบบหายใจ ระบบย่อยอาหาร ระบบขับถ่ายปัสสาวะ และระบบประสาท",
     "facts": [
-      "The renal arteries receive about 20–25% of the total cardiac output each minute.",
-      "Arterial walls have three layers: tunica intima, tunica media, and tunica adventitia.",
-      "The thick muscular walls of arteries help withstand the high pressure of blood pumped from the heart.",
-      "Each renal artery divides into segmental arteries, then interlobar, arcuate, and interlobular arteries inside the kidney."
+      "The adult human body contains approximately 37 trillion cells.",
+      "The body is made up of 11 major organ systems.",
+      "Over 60% of the human body's weight is water.",
+      "The body has 206 bones and over 600 muscles."
     ],
-    "cameraTarget": [
-      -2,
-      0.5,
-      3
-    ],
-    "labelOffset": [
-      -0.33,
-      -0.401,
-      0.451
-    ],
-    "visible": true
-  },
-  {
-    "id": 6,
-    "name": "Skeletal",
-    "category": "Structure",
-    "color": "#f0e68c",
-    "icon": "💀",
-    "description": "This model represents the skeletal structure in relation to the urinary system. The spine and surrounding bones provide structural support and protection for the kidneys, which are located in the retroperitoneal space beside the lumbar vertebrae.",
-    "facts": [
-      "The kidneys are protected by the lower rib cage (ribs 11 and 12) and the muscles of the back.",
-      "The lumbar vertebrae (L1–L4) are the closest vertebrae to the kidneys.",
-      "The pelvic bones protect the urinary bladder and lower urinary tract.",
-      "Bone-derived factors influence kidney function through calcium and phosphate regulation."
+    "facts_th": [
+      "ร่างกายของมนุษย์วัยผู้ใหญ่ประกอบด้วยเซลล์ประมาณ 37 ล้านล้านเซลล์",
+      "ร่างกายมนุษย์ประกอบด้วยระบบอวัยวะหลักทั้งหมด 11 ระบบ",
+      "มากกว่าร้อยละ 60 ของน้ำหนักร่างกายมนุษย์คือน้ำ",
+      "ร่างกายมีกระดูกทั้งหมด 206 ชิ้น และมีกล้ามเนื้อมากกว่า 600 มัด"
     ],
     "cameraTarget": [
       0,
@@ -168,9 +95,145 @@
       6
     ],
     "labelOffset": [
-      -0.471,
-      -1.336,
-      -0.177
+      1.698,
+      7.874,
+      1.01
+    ],
+    "visible": true
+  },
+  {
+    "id": 3,
+    "name": "Skeletal System",
+    "name_th": "ระบบโครงกระดูก",
+    "category": "Structure",
+    "category_th": "โครงสร้าง",
+    "color": "#e9c46a",
+    "icon": "🦴",
+    "description": "The skeletal system is the framework of bones and connective tissues that provides shape, support, and protection to the body. It also works with muscles to enable movement and is the site of blood cell production within the bone marrow.",
+    "description_th": "แบบจำลองนี้แสดงความสัมพันธ์ระหว่างระบบโครงกระดูกและระบบขับถ่ายปัสสาวะ โดยกระดูกสันหลังและกระดูกโดยรอบทำหน้าที่ค้ำจุนและปกป้องไต ซึ่งตั้งอยู่ในช่องหลังเยื่อบุช่องท้องบริเวณข้างกระดูกสันหลังส่วนเอว นอกจากนี้ กระดูกยังมีบทบาทในการควบคุมสมดุลของแคลเซียมและฟอสเฟต ซึ่งส่งผลต่อการทำงานของไต",
+    "facts": [
+      "An adult human has 206 bones; a newborn has around 270, which fuse over time.",
+      "Bone marrow produces red blood cells, white blood cells, and platelets.",
+      "Bones store 99% of the body's calcium and 85% of its phosphorus.",
+      "The femur (thigh bone) is the longest and strongest bone in the body."
+    ],
+    "facts_th": [
+      "ไตได้รับการปกป้องจากกระดูกซี่โครงคู่ล่าง (ซี่โครงคู่ที่ 11 และ 12) และกล้ามเนื้อบริเวณหลัง",
+      "กระดูกสันหลังส่วนเอว (L1–L4) เป็นกระดูกสันหลังที่อยู่ใกล้กับไตมากที่สุด",
+      "กระดูกเชิงกรานทำหน้าที่ปกป้องกระเพาะปัสสาวะและทางเดินปัสสาวะส่วนล่าง",
+      "ปัจจัยที่สร้างจากกระดูกมีผลต่อการทำงานของไตผ่านการควบคุมสมดุลของแคลเซียมและฟอสเฟต"
+    ],
+    "cameraTarget": [
+      0,
+      0,
+      4
+    ],
+    "labelOffset": [
+      -0.141,
+      8.734,
+      -0.834
+    ],
+    "visible": true
+  },
+  {
+    "id": 4,
+    "name": "Vein",
+    "name_th": "หลอดเลือดดำไต",
+    "category": "Circulation",
+    "category_th": "ระบบไหลเวียนเลือด",
+    "color": "#4361ee",
+    "icon": "🔵",
+    "description": "Veins are blood vessels that carry deoxygenated blood from the body's tissues back to the heart. In the context of the kidney, the renal vein carries filtered, deoxygenated blood from the kidney to the inferior vena cava and then back to the heart.",
+    "description_th": "หลอดเลือดดำไตทำหน้าที่ลำเลียงเลือดที่ผ่านการกรองแล้วและมีปริมาณออกซิเจนต่ำออกจากไตเข้าสู่หลอดเลือดดำใหญ่ส่วนล่าง ก่อนส่งกลับไปยังหัวใจ",
+    "facts": [
+      "Veins contain valves that prevent blood from flowing backward.",
+      "About 70% of the body's blood volume is held in the veins at any given time.",
+      "The left renal vein is longer than the right renal vein because the aorta is slightly to the left.",
+      "Veins have thinner walls than arteries because they carry blood at lower pressure."
+    ],
+    "facts_th": [
+      "ภายในหลอดเลือดดำมีลิ้นกั้นเพื่อป้องกันการไหลย้อนกลับของเลือด",
+      "เลือดประมาณร้อยละ 70 ของปริมาณเลือดทั้งหมดในร่างกายอยู่ในหลอดเลือดดำ",
+      "หลอดเลือดดำไตข้างซ้ายมีความยาวมากกว่าข้างขวา",
+      "ผนังหลอดเลือดดำบางกว่าหลอดเลือดแดง เนื่องจากมีแรงดันเลือดต่ำกว่า"
+    ],
+    "cameraTarget": [
+      0,
+      2,
+      6
+    ],
+    "labelOffset": [
+      0.375,
+      11.487,
+      1.681
+    ],
+    "visible": true
+  },
+  {
+    "id": 5,
+    "name": "Artery",
+    "name_th": "หลอดเลือดแดงไต",
+    "category": "Circulation",
+    "category_th": "ระบบไหลเวียนเลือด",
+    "color": "#e63946",
+    "icon": "🔴",
+    "description": "Arteries are thick-walled blood vessels that carry oxygenated blood away from the heart to the rest of the body. The renal artery branches directly from the abdominal aorta and delivers unfiltered, oxygen-rich blood to the kidney for processing.",
+    "description_th": "หลอดเลือดแดงไตเป็นแขนงของหลอดเลือดแดงใหญ่ในช่องท้อง ทำหน้าที่นำเลือดที่มีออกซิเจนสูงและยังไม่ผ่านการกรองเข้าสู่ไต เพื่อให้ไตทำหน้าที่กรองของเสียและรักษาสมดุลของร่างกาย",
+    "facts": [
+      "The renal arteries receive about 20–25% of the total cardiac output each minute.",
+      "Arterial walls have three layers: tunica intima, tunica media, and tunica adventitia.",
+      "The thick muscular walls of arteries help withstand the high pressure of blood pumped from the heart.",
+      "Each renal artery divides into segmental arteries, then interlobar, arcuate, and interlobular arteries inside the kidney."
+    ],
+    "facts_th": [
+      "หลอดเลือดแดงไตได้รับเลือดประมาณร้อยละ 20–25 ของเลือดที่หัวใจสูบฉีดในแต่ละนาที",
+      "ผนังหลอดเลือดแดงประกอบด้วย 3 ชั้น ได้แก่ Tunica intima, Tunica media และ Tunica adventitia",
+      "ผนังกล้ามเนื้อที่หนาช่วยทนต่อแรงดันเลือดสูงจากหัวใจ",
+      "หลอดเลือดแดงไตแตกแขนงเป็น Segmental, Interlobar, Arcuate และ Interlobular arteries"
+    ],
+    "cameraTarget": [
+      -2,
+      0.5,
+      3
+    ],
+    "labelOffset": [
+      -0.564,
+      11.063,
+      1.039
+    ],
+    "visible": true
+  },
+  {
+    "id": 6,
+    "name": "Skeletal",
+    "name_th": "ระบบโครงกระดูก (ภาพรวม)",
+    "category": "Structure",
+    "category_th": "โครงสร้าง",
+    "color": "#f0e68c",
+    "icon": "💀",
+    "description": "This model represents the skeletal structure in relation to the urinary system. The spine and surrounding bones provide structural support and protection for the kidneys, which are located in the retroperitoneal space beside the lumbar vertebrae.",
+    "description_th": "แบบจำลองนี้แสดงโครงสร้างกระดูกในความสัมพันธ์กับระบบขับถ่ายปัสสาวะ กระดูกสันหลังและกระดูกโดยรอบทำหน้าที่ค้ำจุนและปกป้องไต ซึ่งตั้งอยู่ในช่องหลังเยื่อบุช่องท้องบริเวณข้างกระดูกสันหลังส่วนเอว",
+    "facts": [
+      "The kidneys are protected by the lower rib cage (ribs 11 and 12) and the muscles of the back.",
+      "The lumbar vertebrae (L1–L4) are the closest vertebrae to the kidneys.",
+      "The pelvic bones protect the urinary bladder and lower urinary tract.",
+      "Bone-derived factors influence kidney function through calcium and phosphate regulation."
+    ],
+    "facts_th": [
+      "ไตได้รับการปกป้องจากกระดูกซี่โครงคู่ล่าง (ซี่โครงคู่ที่ 11 และ 12) และกล้ามเนื้อบริเวณหลัง",
+      "กระดูกสันหลังส่วนเอว (L1–L4) เป็นกระดูกสันหลังที่อยู่ใกล้กับไตมากที่สุด",
+      "กระดูกเชิงกรานทำหน้าที่ปกป้องกระเพาะปัสสาวะและทางเดินปัสสาวะส่วนล่าง",
+      "ปัจจัยที่สร้างจากกระดูกมีผลต่อการทำงานของไตผ่านการควบคุมสมดุลของแคลเซียมและฟอสเฟต"
+    ],
+    "cameraTarget": [
+      0,
+      0,
+      5
+    ],
+    "labelOffset": [
+      0.239,
+      9.68,
+      -0.132
     ],
     "visible": true
   }

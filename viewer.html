@@ -19,16 +19,25 @@
       <span></span><span></span><span></span>
     </button>
     <nav class="main-links" id="main-nav">
-      <a href="index.html">Home</a>
-      <a href="viewer.html" class="active">3D Explorer</a>
-      <a href="quiz.html">Quiz</a>
+      <a href="index.html" data-i18n="nav_home">Home</a>
+      <a href="viewer.html" class="active" data-i18n="nav_explorer">3D Explorer</a>
+      <a href="quiz.html" data-i18n="nav_quiz">Quiz</a>
     </nav>
     <div class="search-container">
       <span class="search-icon">🔍</span>
-      <input type="text" id="search-input" placeholder="Search anatomy..." />
+      <input type="text" id="search-input" data-i18n-ph="search_ph" placeholder="Search anatomy..." />
+    </div>
+    <!-- Language Toggle -->
+    <div class="lang-toggle" id="lang-toggle" title="Switch language / เปลี่ยนภาษา">
+      <span class="lang-flag lang-en">🇬🇧</span>
+      <label class="toggle-switch lang-switch" for="lang-checkbox">
+        <input type="checkbox" id="lang-checkbox" />
+        <span class="toggle-track"></span>
+      </label>
+      <span class="lang-flag lang-th">🇹🇭</span>
     </div>
     <div class="nav-controls">
-      <button id="btn-fullscreen" title="Fullscreen">⛶</button>
+      <button id="btn-header-reset-cam" title="Reset Camera">🔄</button>
       <button id="btn-settings" title="Settings">⚙️</button>
     </div>
   </header>
@@ -41,8 +50,7 @@
     <!-- Left Sidebar: Categories & Lists -->
     <aside class="sidebar left-sidebar" id="sidebar">
       <nav class="sidebar-tabs">
-        <button class="tab-btn active" data-target="anatomy">Anatomy</button>
-        <button class="tab-btn" data-target="function">Function</button>
+        <button class="tab-btn active" data-target="anatomy" data-i18n="sidebar_anatomy">Anatomy</button>
       </nav>
       
       <div class="sidebar-content" id="anatomy-list">
@@ -64,7 +72,7 @@
       <div id="loading-overlay">
         <div class="medical-spinner"></div>
         <div class="progress-wrap"><div id="progress-bar"></div></div>
-        <div id="loading-text">Initializing Medical Interface...</div>
+        <div id="loading-text" data-i18n="loading_text">Initializing Medical Interface...</div>
       </div>
       
       <!-- Info Popup (Glassmorphism) -->
@@ -93,22 +101,22 @@
 
     <!-- Right Sidebar: Visualization Controls -->
     <aside class="sidebar right-sidebar" id="right-sidebar">
-      <h3>Visualization Controls</h3>
+      <h3 data-i18n="ctrl_title">Visualization Controls</h3>
       <div class="control-group">
-        <label><input type="checkbox" id="toggle-blood" checked /> Show Artery &amp; Vein</label>
-        <label><input type="checkbox" id="toggle-urine" checked /> Show Urinary Collecting System</label>
-        <label><input type="checkbox" id="toggle-labels" checked /> Show Labels</label>
+        <label><input type="checkbox" id="toggle-blood" checked /> <span data-i18n="ctrl_blood">Show Artery &amp; Vein</span></label>
+        <label><input type="checkbox" id="toggle-urine" checked /> <span data-i18n="ctrl_urine">Show Urinary Collecting System</span></label>
+        <label><input type="checkbox" id="toggle-labels" checked /> <span data-i18n="ctrl_labels">Show Labels</span></label>
       </div>
       
-      <h3>Filter Objects</h3>
+      <h3 data-i18n="filter_title">Filter Objects</h3>
       <div class="control-group" id="filter-objects-list">
         <!-- Dynamically populated by JS based on loaded models -->
       </div>
 
-      <h3>Model Positions</h3>
+      <h3 data-i18n="model_pos_title">Model Positions</h3>
       <div class="control-group" id="model-position-editor">
         <select id="model-select" class="modern-input">
-          <option value="">-- Select Model --</option>
+          <option value="" data-i18n="model_select_ph">-- Select Model --</option>
         </select>
         <div style="display:flex; gap:6px; margin-top:8px;">
           <div style="flex:1;">
@@ -125,12 +133,12 @@
           </div>
         </div>
         <div style="display:flex; gap:6px; margin-top:8px;">
-          <button id="btn-reset-model-pos" class="outline-btn" disabled style="flex:1;">Reset</button>
-          <button id="btn-log-model-pos" class="outline-btn" style="flex:1;">Log All</button>
+          <button id="btn-reset-model-pos" class="outline-btn" disabled style="flex:1;" data-i18n="btn_reset">Reset</button>
+          <button id="btn-log-model-pos" class="outline-btn" style="flex:1;" data-i18n="btn_log_all">Log All</button>
         </div>
       </div>
 
-      <h3>Label Manager</h3>
+      <h3 data-i18n="label_mgr_title">Label Manager</h3>
       <div class="control-group" id="label-manager-container">
 
         <!-- Edit Mode Toggle -->
@@ -138,16 +146,16 @@
           <label class="toggle-switch" for="toggle-edit-labels" title="Enable to drag labels in the 3D viewport">
             <input type="checkbox" id="toggle-edit-labels" />
             <span class="toggle-track"></span>
-            <span class="toggle-label-text">Edit Mode (Drag Labels)</span>
+            <span class="toggle-label-text" data-i18n="edit_mode_text">Edit Mode (Drag Labels)</span>
           </label>
         </div>
 
         <select id="label-select" class="modern-input">
-          <option value="">-- Select Label to Edit --</option>
+          <option value="" data-i18n="label_select_ph">-- Select Label to Edit --</option>
         </select>
-        <input type="text" id="label-name" placeholder="Label Name" class="modern-input" disabled />
+        <input type="text" id="label-name" data-i18n-ph="label_name_ph" placeholder="Label Name" class="modern-input" disabled />
         <div style="display: flex; gap: 8px; align-items: center;">
-          <input type="checkbox" id="label-visible" disabled /> <label for="label-visible" style="font-size: 0.85rem; margin:0;">Is Visible</label>
+          <input type="checkbox" id="label-visible" disabled /> <label for="label-visible" style="font-size: 0.85rem; margin:0;" data-i18n="label_visible">Is Visible</label>
         </div>
         <div style="display: flex; gap: 8px;">
           <input type="number" id="label-x" placeholder="X" step="0.1" class="modern-input" disabled />
@@ -155,15 +163,15 @@
           <input type="number" id="label-z" placeholder="Z" step="0.1" class="modern-input" disabled />
         </div>
         <div style="display: flex; gap: 8px;">
-          <button id="btn-add-label" class="outline-btn">Add New</button>
-          <button id="btn-delete-label" class="outline-btn" style="color:#f87171; border-color:#f87171;" disabled>Delete</button>
+          <button id="btn-add-label" class="outline-btn" data-i18n="btn_add_new">Add New</button>
+          <button id="btn-delete-label" class="outline-btn" style="color:#f87171; border-color:#f87171;" disabled data-i18n="btn_delete">Delete</button>
         </div>
-        <button id="btn-save-conf" class="btn btn-primary" style="margin-top: 10px; width: 100%;">💾 Save to conf.json</button>
+        <button id="btn-save-conf" class="btn btn-primary" style="margin-top: 10px; width: 100%;" data-i18n="btn_save_conf">💾 Save to conf.json</button>
       </div>
 
       <div class="control-group" style="margin-top: 20px;">
-        <button id="btn-reset-cam" class="outline-btn">Reset Camera</button>
-        <button id="btn-screenshot" class="outline-btn">Capture Screenshot</button>
+        <button id="btn-reset-cam" class="outline-btn" data-i18n="btn_reset_cam">Reset Camera</button>
+        <button id="btn-screenshot" class="outline-btn" data-i18n="btn_screenshot">Capture Screenshot</button>
       </div>
     </aside>
 
@@ -177,6 +185,23 @@
       "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/"
     }
   }
+  </script>
+
+  <!-- Language Bootstrap (before main.js) -->
+  <script type="module">
+    import { getCurrentLang, setCurrentLang, applyTranslations } from './src/lang/translations.js';
+
+    const checkbox = document.getElementById('lang-checkbox');
+    const lang = getCurrentLang();
+    checkbox.checked = (lang === 'th');
+    applyTranslations(lang);
+
+    checkbox.addEventListener('change', () => {
+      const newLang = checkbox.checked ? 'th' : 'en';
+      setCurrentLang(newLang);
+      applyTranslations(newLang);
+      document.documentElement.lang = newLang === 'th' ? 'th' : 'en';
+    });
   </script>
 
   <!-- Application Entry Point -->

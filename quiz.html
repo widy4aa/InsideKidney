@@ -15,35 +15,50 @@
       <h1>InsideKidney</h1>
     </div>
     <nav class="main-links">
-      <a href="index.html">Home</a>
-      <a href="viewer.html">3D Explorer</a>
-      <a href="quiz.html" class="active">Quiz</a>
+      <a href="index.html" data-i18n="nav_home">Home</a>
+      <a href="viewer.html" data-i18n="nav_explorer">3D Explorer</a>
+      <a href="quiz.html" class="active" data-i18n="nav_quiz">Quiz</a>
     </nav>
+    <!-- Language Toggle -->
+    <div class="lang-toggle" id="lang-toggle" title="Switch language / เปลี่ยนภาษา">
+      <span class="lang-flag lang-en">🇬🇧</span>
+      <label class="toggle-switch lang-switch" for="lang-checkbox">
+        <input type="checkbox" id="lang-checkbox" />
+        <span class="toggle-track"></span>
+      </label>
+      <span class="lang-flag lang-th">🇹🇭</span>
+    </div>
   </header>
 
   <!-- Quiz Section -->
   <main class="quiz-section">
     <div class="quiz-container glass-panel" id="quiz-container">
       <div class="quiz-header">
-        <h2>Kidney Anatomy & Function Quiz</h2>
+        <h2 data-i18n="quiz_title">Kidney Anatomy &amp; Function Quiz</h2>
         <span id="quiz-progress" class="badge">Question 1 / 5</span>
       </div>
       
       <div id="quiz-body">
-        <h3 id="question-text" class="question-text">Loading question...</h3>
+        <h3 id="question-text" class="question-text" data-i18n="quiz_loading">Loading question...</h3>
         <div id="options-container" class="options-grid">
           <!-- Options injected by JS -->
         </div>
       </div>
 
       <div id="quiz-result" class="hidden">
-        <h3 class="result-title">Quiz Complete!</h3>
-        <p class="result-score">You scored <span id="score-display">0</span> out of <span id="total-display">0</span>.</p>
-        <button id="btn-restart" class="btn btn-primary">Try Again</button>
+        <h3 class="result-title" data-i18n="quiz_complete">Quiz Complete!</h3>
+        <p class="result-score">
+          <span data-i18n="quiz_score_pre">You scored</span>
+          <span id="score-display">0</span>
+          <span data-i18n="quiz_score_of">out of</span>
+          <span id="total-display">0</span>.
+        </p>
+        <button id="btn-restart" class="btn btn-primary" data-i18n="quiz_retry">Try Again</button>
       </div>
     </div>
   </main>
 
+  <!-- Language Bootstrap -->
   <script type="module" src="src/ui/quiz.js"></script>
 </body>
 </html>

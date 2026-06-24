@@ -58,11 +58,22 @@ body.page-viewer {
   height: 60px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 20px;
   padding: 0 24px;
   background: rgba(5, 8, 22, 0.8);
   border-bottom: 1px solid var(--border-glow);
   z-index: 100;
+}
+
+/* Push nav-controls / search to the right */
+.nav-controls,
+.search-container {
+  margin-left: auto;
+}
+
+/* On pages without nav-controls/search, lang-toggle pushes itself right */
+.lang-toggle {
+  flex-shrink: 0;
 }
 
 .brand {
@@ -93,6 +104,92 @@ body.page-viewer {
 
 .main-links a:hover, .main-links a.active {
   color: var(--accent);
+}
+
+/* ─── Language Toggle ──────────────────────────────────────────── */
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  padding: 4px 10px;
+  background: rgba(0, 229, 255, 0.06);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-radius: 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+}
+
+.lang-toggle:hover {
+  border-color: var(--accent);
+  background: rgba(0, 229, 255, 0.12);
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+}
+
+.lang-flag {
+  font-size: 1rem;
+  line-height: 1;
+  transition: opacity 0.25s, transform 0.25s;
+}
+
+/* Active flag is bright, inactive is dim */
+.lang-flag.lang-en { opacity: 1; transform: scale(1.05); }
+.lang-flag.lang-th { opacity: 0.4; transform: scale(0.9); }
+
+/* When Thai is active (checkbox checked) */
+.lang-toggle:has(#lang-checkbox:checked) .lang-flag.lang-en {
+  opacity: 0.4;
+  transform: scale(0.9);
+}
+.lang-toggle:has(#lang-checkbox:checked) .lang-flag.lang-th {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  cursor: pointer;
+}
+
+/* The track is narrower for the lang switch */
+.lang-switch .toggle-track {
+  width: 34px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 9px;
+  position: relative;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+.lang-switch .toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  transition: transform 0.25s, background 0.25s;
+}
+
+.lang-switch input:checked + .toggle-track {
+  background: rgba(0, 229, 255, 0.25);
+  border-color: var(--accent);
+}
+
+.lang-switch input:checked + .toggle-track::after {
+  transform: translateX(16px);
+  background: var(--accent);
+}
+
+/* Hide the native checkbox */
+.lang-switch input[type="checkbox"] {
+  display: none;
 }
 
 /* Base Buttons */
@@ -868,17 +965,18 @@ body.page-viewer {
 .label3d {
   background: rgba(10, 15, 30, 0.85);
   border: 1px solid var(--accent);
-  color: var(--text-main);
-  padding: 4px 8px 4px 10px;
-  border-radius: 4px;
-  font-size: 0.8rem;
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: bold;
   font-family: var(--font-mono);
   pointer-events: auto;
   cursor: pointer;
   white-space: nowrap;
   backdrop-filter: blur(4px);
-  box-shadow: 0 0 8px rgba(0,229,255,0.2);
-  transition: opacity 0.2s;
+  box-shadow: 0 0 10px rgba(0,229,255,0.3);
+  transition: transform 0.2s, opacity 0.2s;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -1229,4 +1327,40 @@ body.label-edit-mode .label3d {
   .hero-title { font-size: 1.5rem; }
   #info-popup { max-height: 82vh; }
   .camera-info { display: none; } /* Too cluttered on very small screens */
+}
+
+/* ─── Lang toggle responsive ────────────────────────────────── */
+@media (max-width: 768px) {
+  .lang-toggle {
+    padding: 3px 7px;
+    gap: 5px;
+  }
+  .lang-flag { font-size: 0.9rem; }
+  .lang-switch .toggle-track {
+    width: 28px;
+    height: 16px;
+  }
+  .lang-switch .toggle-track::after {
+    width: 10px;
+    height: 10px;
+  }
+  .lang-switch input:checked + .toggle-track::after {
+    transform: translateX(12px);
+  }
+}
+
+/* Number Badges for Anatomy Sidebar */
+.number-badge {
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  flex-shrink: 0;
 }

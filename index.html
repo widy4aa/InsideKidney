@@ -19,26 +19,35 @@
       <span></span><span></span><span></span>
     </button>
     <nav class="main-links" id="main-nav">
-      <a href="index.html" class="active">Home</a>
-      <a href="viewer.html">3D Explorer</a>
-      <a href="quiz.html">Quiz</a>
+      <a href="index.html" class="active" data-i18n="nav_home">Home</a>
+      <a href="viewer.html" data-i18n="nav_explorer">3D Explorer</a>
+      <a href="quiz.html" data-i18n="nav_quiz">Quiz</a>
     </nav>
+    <!-- Language Toggle -->
+    <div class="lang-toggle" id="lang-toggle" title="Switch language / เปลี่ยนภาษา">
+      <span class="lang-flag lang-en">🇬🇧</span>
+      <label class="toggle-switch lang-switch" for="lang-checkbox">
+        <input type="checkbox" id="lang-checkbox" />
+        <span class="toggle-track"></span>
+      </label>
+      <span class="lang-flag lang-th">🇹🇭</span>
+    </div>
   </header>
 
   <main>
     <section class="hero-section">
       <div class="hero-copy">
-        <div class="badge">Medical Holographic Interface</div>
-        <h1 class="hero-title">InsideKidney</h1>
-        <p class="hero-subtitle">
+        <div class="badge" data-i18n="badge">Medical Holographic Interface</div>
+        <h1 class="hero-title" data-i18n="hero_title">InsideKidney</h1>
+        <p class="hero-subtitle" data-i18n="hero_subtitle">
           Explore kidney anatomy, blood filtration, nephron physiology, and urine formation through an interactive 3D learning experience.
         </p>
         <div class="hero-actions">
           <a href="viewer.html" class="btn btn-primary">
-            <span class="btn-icon">🔍</span> Open 3D Explorer
+            <span class="btn-icon">🔍</span> <span data-i18n="btn_open_3d">Open 3D Explorer</span>
           </a>
           <a href="quiz.html" class="btn btn-secondary">
-            <span class="btn-icon">📝</span> Take the Quiz
+            <span class="btn-icon">📝</span> <span data-i18n="btn_quiz">Take the Quiz</span>
           </a>
         </div>
       </div>
@@ -50,24 +59,24 @@
 
     <section class="overview-strip" aria-label="Learning highlights">
       <div>
-        <strong>3D Model</strong>
-        <span>Rotate, inspect, and focus on kidney structures.</span>
+        <strong data-i18n="strip_3d_title">3D Model</strong>
+        <span data-i18n="strip_3d_desc">Rotate, inspect, and focus on kidney structures.</span>
       </div>
       <div>
-        <strong>Guided Labels</strong>
-        <span>Understand vessels, cortex, medulla, pelvis, and ureter.</span>
+        <strong data-i18n="strip_label_title">Guided Labels</strong>
+        <span data-i18n="strip_label_desc">Understand vessels, cortex, medulla, pelvis, and ureter.</span>
       </div>
       <div>
-        <strong>Knowledge Check</strong>
-        <span>Practice with editable quiz data from JSON.</span>
+        <strong data-i18n="strip_quiz_title">Knowledge Check</strong>
+        <span data-i18n="strip_quiz_desc">Practice with editable quiz data from JSON.</span>
       </div>
     </section>
 
     <section class="content-section">
       <div class="section-heading">
-        <span class="eyebrow">What you will learn</span>
-        <h2>Kidney anatomy made easier to inspect</h2>
-        <p>
+        <span class="eyebrow" data-i18n="section_eyebrow">What you will learn</span>
+        <h2 data-i18n="section_h2">Kidney anatomy made easier to inspect</h2>
+        <p data-i18n="section_desc">
           The landing page now gives students a quick map of the topic before they enter the 3D explorer.
         </p>
       </div>
@@ -75,53 +84,53 @@
       <div class="info-grid">
         <article class="info-card">
           <span class="info-icon">🩸</span>
-          <h3>Blood Inflow</h3>
-          <p>Follow how renal arteries bring blood into the kidney before filtration begins.</p>
+          <h3 data-i18n="card_blood_title">Blood Inflow</h3>
+          <p data-i18n="card_blood_desc">Follow how renal arteries bring blood into the kidney before filtration begins.</p>
         </article>
         <article class="info-card">
           <span class="info-icon">🧪</span>
-          <h3>Filtration</h3>
-          <p>Connect the 3D anatomy with nephron function, glomerular filtration, and reabsorption.</p>
+          <h3 data-i18n="card_filter_title">Filtration</h3>
+          <p data-i18n="card_filter_desc">Connect the 3D anatomy with nephron function, glomerular filtration, and reabsorption.</p>
         </article>
         <article class="info-card">
           <span class="info-icon">💧</span>
-          <h3>Urine Pathway</h3>
-          <p>Trace fluid movement from collecting ducts toward the renal pelvis and ureter.</p>
+          <h3 data-i18n="card_urine_title">Urine Pathway</h3>
+          <p data-i18n="card_urine_desc">Trace fluid movement from collecting ducts toward the renal pelvis and ureter.</p>
         </article>
         <article class="info-card">
           <span class="info-icon">🎯</span>
-          <h3>Focused Review</h3>
-          <p>Use the quiz after exploration to check whether key anatomy terms are understood.</p>
+          <h3 data-i18n="card_focus_title">Focused Review</h3>
+          <p data-i18n="card_focus_desc">Use the quiz after exploration to check whether key anatomy terms are understood.</p>
         </article>
       </div>
     </section>
 
     <section class="learning-section">
       <div class="section-heading compact">
-        <span class="eyebrow">Suggested flow</span>
-        <h2>Learn in three steps</h2>
+        <span class="eyebrow" data-i18n="steps_eyebrow">Suggested flow</span>
+        <h2 data-i18n="steps_h2">Learn in three steps</h2>
       </div>
 
       <ol class="timeline">
         <li>
           <span>01</span>
           <div>
-            <h3>Preview the structure</h3>
-            <p>Start from the major kidney parts so the model feels familiar before rotating it.</p>
+            <h3 data-i18n="step1_title">Preview the structure</h3>
+            <p data-i18n="step1_desc">Start from the major kidney parts so the model feels familiar before rotating it.</p>
           </div>
         </li>
         <li>
           <span>02</span>
           <div>
-            <h3>Explore the model</h3>
-            <p>Open the 3D explorer, inspect labels, and focus on structures one by one.</p>
+            <h3 data-i18n="step2_title">Explore the model</h3>
+            <p data-i18n="step2_desc">Open the 3D explorer, inspect labels, and focus on structures one by one.</p>
           </div>
         </li>
         <li>
           <span>03</span>
           <div>
-            <h3>Test understanding</h3>
-            <p>Finish with the quiz. Questions can be updated anytime through <code>quiz.json</code>.</p>
+            <h3 data-i18n="step3_title">Test understanding</h3>
+            <p data-i18n="step3_desc">Finish with the quiz. Questions can be updated anytime through <code>quiz.json</code>.</p>
           </div>
         </li>
       </ol>
@@ -129,15 +138,18 @@
 
     <section class="cta-band">
       <div>
-        <span class="eyebrow">Ready to explore</span>
-        <h2>Start with the 3D kidney model</h2>
-        <p>Use the visual explorer first, then return to the quiz for review.</p>
+        <span class="eyebrow" data-i18n="cta_eyebrow">Ready to explore</span>
+        <h2 data-i18n="cta_h2">Start with the 3D kidney model</h2>
+        <p data-i18n="cta_desc">Use the visual explorer first, then return to the quiz for review.</p>
       </div>
-      <a href="viewer.html" class="btn btn-primary">Launch Explorer</a>
+      <a href="viewer.html" class="btn btn-primary" data-i18n="cta_btn">Launch Explorer</a>
     </section>
   </main>
 
-  <script>
+  <script type="module">
+    import { getCurrentLang, setCurrentLang, applyTranslations } from './src/lang/translations.js';
+
+    // ── Hamburger ──────────────────────────────────────────────────
     const burger = document.getElementById('hamburger');
     const nav    = document.getElementById('main-nav');
     burger.addEventListener('click', () => {
@@ -150,6 +162,19 @@
       nav.classList.remove('open');
       burger.setAttribute('aria-expanded', 'false');
     }));
+
+    // ── Language Toggle ────────────────────────────────────────────
+    const checkbox = document.getElementById('lang-checkbox');
+    const lang = getCurrentLang();
+    checkbox.checked = (lang === 'th');
+    applyTranslations(lang);
+
+    checkbox.addEventListener('change', () => {
+      const newLang = checkbox.checked ? 'th' : 'en';
+      setCurrentLang(newLang);
+      applyTranslations(newLang);
+      document.documentElement.lang = newLang === 'th' ? 'th' : 'en';
+    });
   </script>
 </body>
 </html>

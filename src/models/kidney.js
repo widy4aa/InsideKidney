@@ -5,13 +5,13 @@ import { CONFIG } from '../utils/config.js';
 // Mapping the available OBJs to our new medical theme materials
 // offset: [x, y, z] applied in the group's local space (after Z-up→Y-up rotation)
 export const MODEL_DEFS = [
-  { file: 'model_0.obj', color: CONFIG.theme.blood,   opacity: 0.85, name: 'Urinary Collecting System', offset: [0, 0, 0] },
-  { file: 'model_1.obj', color: CONFIG.theme.venous,  opacity: 0.85, name: 'Kidney',                    offset: [0, 0, 0] },
-  { file: 'model_2.obj', color: CONFIG.theme.tubules, opacity: 0.9,  name: 'Human Body',                offset: [0, 0, 0] },
-  { file: 'model_3.obj', color: CONFIG.theme.urine,   opacity: 0.7,  name: 'Skeletal System',           offset: [0, 0, 0] },
-  { file: 'model_4.obj', color: 0xff8fa3,             opacity: 1.0,  name: 'Vein',                      offset: [0, 0, 0] },
-  { file: 'model_5.obj', color: 0xc9184a,             opacity: 1.0,  name: 'Artery',                    offset: [0, 0, 0] },
-  { file: 'model_6.obj', color: 0xffd166,             opacity: 0.4,  name: 'Skeletal',                  offset: [0, 0, 0] }
+  { file: 'model_0.obj', color: 0xf0e68c, opacity: 0.4,  name: 'Skeletal',                 offset: [0, 0, 0] },
+  { file: 'model_1.obj', color: 0xe9c46a, opacity: 0.7,  name: 'Skeletal System',           offset: [0, 0, 0] },
+  { file: 'model_2.obj', color: 0x4361ee, opacity: 1.0,  name: 'Vein',                      offset: [0, 0, 0] },
+  { file: 'model_3.obj', color: 0xff4d6d, opacity: 0.85, name: 'Urinary Collecting System', offset: [0, 0, 0] },
+  { file: 'model_4.obj', color: 0xff6b6b, opacity: 0.85, name: 'Kidney',                    offset: [0, 0, 0] },
+  { file: 'model_5.obj', color: 0xc9184a, opacity: 1.0,  name: 'Artery',                    offset: [0, 0, 0] },
+  { file: 'model_6.obj', color: 0xf4a261, opacity: 0.35, name: 'Human Body',                offset: [0, 0, 0] },
 ];
 
 export function loadKidneyModels(scene, onProgress, onComplete) {

@@ -6,6 +6,13 @@ import { createCamera } from './src/scene/camera.js';
 import { createRenderers } from './src/scene/renderer.js';
 import { setupLighting } from './src/scene/lights.js';
 import { loadKidneyModels, MODEL_DEFS } from './src/models/kidney.js';
+import { t, getCurrentLang } from './src/lang/translations.js';
+
+// ─── i18n helpers for part data ─────────────────────────────────
+function partName(part)     { return getCurrentLang() === 'th' && part.name_th     ? part.name_th     : part.name; }
+function partCategory(part) { return getCurrentLang() === 'th' && part.category_th ? part.category_th : (part.category || ''); }
+function partDesc(part)     { return getCurrentLang() === 'th' && part.description_th ? part.description_th : (part.description || ''); }
+function partFacts(part)    { return getCurrentLang() === 'th' && part.facts_th     ? part.facts_th    : (part.facts || []); }
 
 let scene, camera, renderer, labelRenderer, controls;
 let activeModelGroup = null;
@@ -16,6 +23,15 @@ let labelObjects = []; // { part, css2dObj, el }
 let isEditMode = false;   // controlled by the toggle in the sidebar
 let dragState  = null;
 let isDragging = false;
+
+// ─── Camera Animation ─────────────────────────────────────────
+// Set camAnim.active = true to smoothly fly the camera to a new position.
+const camAnim = {
+  active:    false,
+  targetPos: new THREE.Vector3(),   // where camera should end up
+  targetPiv: new THREE.Vector3(),   // where controls.target should end up
+  speed:     0.08,                  // lerp factor per frame (0–1), higher = faster
+};
 
 // ─── Config ──────────────────────────────────────────────────
 async function fetchConfig() {
@@ -60,7 +76,7 @@ function init() {
     (progress) => {
       const percent = Math.round(progress * 100);
       if (progressBar) progressBar.style.width = `${percent}%`;
-      if (loadingText) loadingText.textContent = `Loading Anatomical Models... ${percent}%`;
+      if (loadingText) loadingText.textContent = `${t('loading_models')} ${percent}%`;
     },
     (modelGroup) => {
       activeModelGroup = modelGroup;
@@ -103,7 +119,9 @@ function renderLabels() {
     el.dataset.partIndex = index;
 
     const nameSpan = document.createElement('span');
-    nameSpan.textContent = part.name;
+    // Display number instead of long name to reduce clutter
+    nameSpan.textContent = String(index + 1);
+    nameSpan.className = 'label-number';
     el.appendChild(nameSpan);
 
     // Drag handle icon
@@ -145,6 +163,10 @@ function initDragSystem() {
   container.addEventListener('mousedown', onDragStart, true);
   window.addEventListener('mousemove', onDragMove);
   window.addEventListener('mouseup', onDragEnd);
+
+  // Cancel fly-in animation the moment user touches the canvas (orbit or drag)
+  container.addEventListener('mousedown', () => { camAnim.active = false; });
+  container.addEventListener('touchstart', () => { camAnim.active = false; }, { passive: true });
 
   // Touch support
   container.addEventListener('touchstart', onTouchDragStart, { capture: true, passive: false });
@@ -303,19 +325,31 @@ function initUI() {
   const anatomyList = document.getElementById('anatomy-list');
   if (anatomyList) {
     anatomyList.innerHTML = '';
-    KIDNEY_PARTS.forEach(part => {
+    KIDNEY_PARTS.forEach((part, index) => {
       if (part.visible === false) return;
       const card = document.createElement('div');
       card.className = 'part-card';
       card.innerHTML = `
-        <div class="part-icon">${part.icon || '📌'}</div>
+        <div class="part-icon number-badge">${index + 1}</div>
         <div class="part-info">
-          <h4>${part.name}</h4>
-          <p>${part.category || 'Custom'}</p>
+          <h4>${partName(part)}</h4>
+          <p>${partCategory(part) || 'Custom'}</p>
         </div>
       `;
       card.onclick = () => focusOnPart(part);
       anatomyList.appendChild(card);
+    });
+  }
+
+  // ── Wire language toggle in viewer (re-render on change) ────────
+  const langCb = document.getElementById('lang-checkbox');
+  if (langCb && !langCb.dataset.mainBound) {
+    langCb.dataset.mainBound = '1';
+    langCb.addEventListener('change', () => {
+      // Re-render 3D labels with new language
+      renderLabels();
+      // Refresh anatomy sidebar list
+      initUI();
     });
   }
 
@@ -337,25 +371,39 @@ function initUI() {
   if (btnCloseInfo) {
     btnCloseInfo.onclick = () => {
       document.getElementById('info-popup').classList.add('hidden');
+      clearFocusMode(); // Restore opacities when popup is closed
     };
   }
 
   const btnResetCam = document.getElementById('btn-reset-cam');
-  if (btnResetCam) {
-    btnResetCam.onclick = () => {
-      if (activeModelGroup) {
-        const box    = new THREE.Box3().setFromObject(activeModelGroup);
-        const center = box.getCenter(new THREE.Vector3());
-        const size   = box.getSize(new THREE.Vector3());
-        const maxDim = Math.max(size.x, size.y, size.z);
-        camera.position.set(center.x, center.y, center.z + maxDim * 1.5);
-        controls.target.copy(center);
-      } else {
-        camera.position.set(0, 0, 8);
-        controls.target.set(0, 0, 0);
-      }
-    };
+  const btnHeaderResetCam = document.getElementById('btn-header-reset-cam');
+
+  function resetCamera() {
+    clearFocusMode(); // Restore opacities on reset
+    
+    // Close the info popup if it's open
+    const popup = document.getElementById('info-popup');
+    if (popup) popup.classList.add('hidden');
+
+    if (activeModelGroup) {
+      const box    = new THREE.Box3().setFromObject(activeModelGroup);
+      const center = box.getCenter(new THREE.Vector3());
+      const size   = box.getSize(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+      
+      // Smooth reset using camAnim
+      camAnim.targetPiv.copy(center);
+      camAnim.targetPos.set(center.x, center.y, center.z + maxDim * 1.5);
+      camAnim.active = true;
+    } else {
+      camAnim.targetPiv.set(0, 0, 0);
+      camAnim.targetPos.set(0, 0, 8);
+      camAnim.active = true;
+    }
   }
+
+  if (btnResetCam) btnResetCam.onclick = resetCamera;
+  if (btnHeaderResetCam) btnHeaderResetCam.onclick = resetCamera;
 
   const toggleLabels = document.getElementById('toggle-labels');
   if (toggleLabels) {
@@ -603,14 +651,14 @@ function populateFilterList(modelGroup) {
   if (!filterList) return;
   filterList.innerHTML = '';
 
-  MODEL_DEFS.forEach((def, index) => {
-    const mesh = modelGroup.children[index];
-    if (mesh) mesh.name = def.name;
+  MODEL_DEFS.forEach((def) => {
+    // Find by name — async loading means children[] order is not guaranteed
+    const mesh = modelGroup.children.find(c => c.name === def.name);
 
     const label    = document.createElement('label');
     const checkbox = document.createElement('input');
     checkbox.type    = 'checkbox';
-    checkbox.checked = true;
+    checkbox.checked = mesh ? mesh.visible : true;
     checkbox.onchange = (e) => { if (mesh) mesh.visible = e.target.checked; };
 
     label.appendChild(checkbox);
@@ -675,36 +723,83 @@ function focusOnPart(part) {
   showPreviewImage(part.id);
 
   const titleEl = document.getElementById('info-title');
-  if (titleEl) titleEl.textContent = part.name;
+  if (titleEl) titleEl.textContent = partName(part);
 
   const subEl   = document.getElementById('info-subtitle');
-  if (subEl)   subEl.textContent = part.category || '';
+  if (subEl)   subEl.textContent = partCategory(part);
 
   const descEl  = document.getElementById('info-desc');
-  if (descEl)  descEl.textContent = part.description || '';
+  if (descEl)  descEl.textContent = partDesc(part);
 
   const factsList = document.getElementById('info-facts');
   if (factsList) {
-    factsList.innerHTML = part.facts
-      ? part.facts.map(f => `<li>${f}</li>`).join('')
+    const facts = partFacts(part);
+    factsList.innerHTML = facts.length
+      ? facts.map(f => `<li>${f}</li>`).join('')
       : '';
   }
 
   const popup = document.getElementById('info-popup');
   if (popup) popup.classList.remove('hidden');
 
-  if (part.cameraTarget && part.cameraTarget.length === 3) {
-    camera.position.set(
-      part.cameraTarget[0],
-      part.cameraTarget[1],
-      part.cameraTarget[2] + 4
-    );
-    controls.target.set(
-      part.cameraTarget[0],
-      part.cameraTarget[1],
-      part.cameraTarget[2]
-    );
+  if (activeModelGroup) {
+    // Dim all models except the focused one
+    activeModelGroup.children.forEach(child => {
+      if (!child.material) return;
+      if (child.name === part.name) {
+        // Highlight focused part
+        const def = MODEL_DEFS.find(d => d.name === child.name);
+        if (def) {
+          child.material.opacity = def.opacity;
+          child.material.transparent = def.opacity < 1.0;
+        }
+      } else {
+        // Dim other parts
+        child.material.transparent = true;
+        child.material.opacity = 0.1; // Low opacity for spotlight effect
+      }
+      child.material.needsUpdate = true;
+    });
+
+    // Automatically find the actual 3D mesh for this part
+    const mesh = activeModelGroup.children.find(c => c.name === part.name);
+    if (mesh) {
+      // Calculate exact center of the 3D model
+      const box = new THREE.Box3().setFromObject(mesh);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+      
+      // Calculate how far camera should be based on object size
+      const maxDim = Math.max(size.x, size.y, size.z);
+      // Small objects need closer zoom, large objects need further zoom
+      const distance = Math.max(maxDim * 1.5, 3); 
+
+      // Kick off smooth camera fly-in
+      camAnim.targetPiv.copy(center);
+      camAnim.targetPos.set(center.x, center.y, center.z + distance);
+      camAnim.active = true;
+    } else if (part.cameraTarget && part.cameraTarget.length === 3) {
+      // Fallback to conf.json if mesh not found
+      const [tx, ty, tz] = part.cameraTarget;
+      camAnim.targetPiv.set(tx, ty, tz);
+      camAnim.targetPos.set(tx, ty, tz + 4);
+      camAnim.active = true;
+    }
   }
+}
+
+// ─── Focus Utilities ──────────────────────────────────────────
+function clearFocusMode() {
+  if (!activeModelGroup) return;
+  activeModelGroup.children.forEach(child => {
+    if (!child.material) return;
+    const def = MODEL_DEFS.find(d => d.name === child.name);
+    if (def) {
+      child.material.opacity = def.opacity;
+      child.material.transparent = def.opacity < 1.0;
+      child.material.needsUpdate = true;
+    }
+  });
 }
 
 // ─── Camera Overlay ───────────────────────────────────────────
@@ -722,6 +817,23 @@ function updateCameraOverlay() {
 // ─── Animate ─────────────────────────────────────────────────
 function animate() {
   requestAnimationFrame(animate);
+
+  // Smooth camera fly-in (lerp toward camAnim targets)
+  if (camAnim.active) {
+    camera.position.lerp(camAnim.targetPos, camAnim.speed);
+    controls.target.lerp(camAnim.targetPiv, camAnim.speed);
+
+    // Stop animating once we're close enough
+    if (
+      camera.position.distanceTo(camAnim.targetPos) < 0.01 &&
+      controls.target.distanceTo(camAnim.targetPiv) < 0.01
+    ) {
+      camera.position.copy(camAnim.targetPos);
+      controls.target.copy(camAnim.targetPiv);
+      camAnim.active = false;
+    }
+  }
+
   controls.update();
   updateCameraOverlay();
   renderer.render(scene, camera);

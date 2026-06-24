@@ -1,27 +1,58 @@
 [
   {
     "question": "What is the primary functional unit of the kidney?",
+    "question_th": "หน่วยทำงานหลักของไตคืออะไร?",
     "options": ["Glomerulus", "Nephron", "Renal Pelvis", "Ureter"],
+    "options_th": ["โกลเมอรูลัส", "เนฟรอน", "กรวยไต", "ท่อไต"],
     "answer": 1
   },
   {
     "question": "Which structure is responsible for the initial filtration of blood?",
+    "question_th": "โครงสร้างใดทำหน้าที่กรองเลือดในขั้นแรก?",
     "options": ["Loop of Henle", "Collecting Duct", "Glomerulus", "Distal Tubule"],
+    "options_th": ["ห่วงเฮนเล", "ท่อรวม", "โกลเมอรูลัส", "ท่อส่วนปลาย"],
     "answer": 2
   },
   {
     "question": "Where does the majority of water and solute reabsorption occur?",
+    "question_th": "การดูดซึมน้ำและสารละลายส่วนใหญ่เกิดขึ้นที่ใด?",
     "options": ["Proximal Tubule", "Bowman's Capsule", "Distal Tubule", "Renal Vein"],
+    "options_th": ["ท่อส่วนต้น", "แคปซูลโบว์แมน", "ท่อส่วนปลาย", "หลอดเลือดดำไต"],
     "answer": 0
   },
   {
     "question": "Which part of the kidney contains the loops of Henle?",
+    "question_th": "ส่วนใดของไตที่มีห่วงเฮนเล?",
     "options": ["Renal Cortex", "Renal Pelvis", "Renal Capsule", "Renal Medulla"],
+    "options_th": ["คอร์เทกซ์ไต", "กรวยไต", "แคปซูลไต", "เมดัลลาไต"],
     "answer": 3
   },
   {
     "question": "What hormone primarily controls the permeability of the collecting duct to water?",
+    "question_th": "ฮอร์โมนใดเป็นตัวหลักในการควบคุมการซึมผ่านของน้ำในท่อรวม?",
     "options": ["Insulin", "Antidiuretic Hormone (ADH)", "Erythropoietin", "Adrenaline"],
+    "options_th": ["อินซูลิน", "ฮอร์โมนต้านการขับปัสสาวะ (ADH)", "อีริโทรพอยอิติน", "อะดรีนาลิน"],
     "answer": 1
+  },
+  {
+    "question": "What percentage of cardiac output do the kidneys receive each minute?",
+    "question_th": "ไตได้รับเลือดจากหัวใจกี่เปอร์เซ็นต์ในแต่ละนาที?",
+    "options": ["5–10%", "20–25%", "40–50%", "60–70%"],
+    "options_th": ["5–10%", "20–25%", "40–50%", "60–70%"],
+    "answer": 1
+  },
+  {
+    "question": "How many liters of blood do the kidneys filter per day?",
+    "question_th": "ไตกรองเลือดได้กี่ลิตรต่อวัน?",
+    "options": ["20 liters", "50 liters", "180 liters", "500 liters"],
+    "options_th": ["20 ลิตร", "50 ลิตร", "180 ลิตร", "500 ลิตร"],
+    "answer": 2
+  },
+  {
+    "question": "Which hormone produced by the kidney stimulates red blood cell production?",
+    "question_th": "ฮอร์โมนใดที่ไตผลิตเพื่อกระตุ้นการสร้างเม็ดเลือดแดง?",
+    "options": ["Renin", "Aldosterone", "Erythropoietin", "ADH"],
+    "options_th": ["เรนิน", "อัลโดสเตอโรน", "อีริโทรพอยอิติน", "ADH"],
+    "answer": 2
   }
 ]
