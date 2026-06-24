@@ -3,14 +3,15 @@ import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { CONFIG } from '../utils/config.js';
 
 // Mapping the available OBJs to our new medical theme materials
+// offset: [x, y, z] applied in the group's local space (after Z-up→Y-up rotation)
 export const MODEL_DEFS = [
-  { file: 'model_0.obj', color: CONFIG.theme.blood, opacity: 0.85, name: 'Urinary Collecting System' },
-  { file: 'model_1.obj', color: CONFIG.theme.venous, opacity: 0.85, name: 'Kidney' },
-  { file: 'model_2.obj', color: CONFIG.theme.tubules, opacity: 0.9, name: 'Human Body' },
-  { file: 'model_3.obj', color: CONFIG.theme.urine, opacity: 0.7, name: 'Skeletal System' },
-  { file: 'model_4.obj', color: 0xff8fa3, opacity: 1.0, name: 'Vein' },
-  { file: 'model_5.obj', color: 0xc9184a, opacity: 1.0, name: 'Artery' },
-  { file: 'model_6.obj', color: 0xffd166, opacity: 0.4, name: 'Skeletal' }
+  { file: 'model_0.obj', color: CONFIG.theme.blood,   opacity: 0.85, name: 'Urinary Collecting System', offset: [0, 0, 0] },
+  { file: 'model_1.obj', color: CONFIG.theme.venous,  opacity: 0.85, name: 'Kidney',                    offset: [0, 0, 0] },
+  { file: 'model_2.obj', color: CONFIG.theme.tubules, opacity: 0.9,  name: 'Human Body',                offset: [0, 0, 0] },
+  { file: 'model_3.obj', color: CONFIG.theme.urine,   opacity: 0.7,  name: 'Skeletal System',           offset: [0, 0, 0] },
+  { file: 'model_4.obj', color: 0xff8fa3,             opacity: 1.0,  name: 'Vein',                      offset: [0, 0, 0] },
+  { file: 'model_5.obj', color: 0xc9184a,             opacity: 1.0,  name: 'Artery',                    offset: [0, 0, 0] },
+  { file: 'model_6.obj', color: 0xffd166,             opacity: 0.4,  name: 'Skeletal',                  offset: [0, 0, 0] }
 ];
 
 export function loadKidneyModels(scene, onProgress, onComplete) {
@@ -44,14 +45,15 @@ export function loadKidneyModels(scene, onProgress, onComplete) {
         obj.traverse((child) => {
           if (child.isMesh) {
             child.material = material;
-            child.frustumCulled = true; // Skip off-screen meshes
+            child.frustumCulled = true;
           }
         });
-        
-        // Center the geometry roughly based on bounding box
-        const box = new THREE.Box3().setFromObject(obj);
-        const center = box.getCenter(new THREE.Vector3());
-        obj.position.sub(center); // Recenter the part
+
+        // Name the object and apply per-model offset.
+        // Do NOT center individually — preserve the original relative positions
+        // so all parts stay in their correct anatomical arrangement.
+        obj.name = def.name;
+        obj.position.set(def.offset[0], def.offset[1], def.offset[2]);
 
         group.add(obj);
         loadedCount++;

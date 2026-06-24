@@ -50,6 +50,7 @@ function init() {
   initUI();
   initLabelManager();
   initDragSystem();
+  initModelPositionEditor();
 
   const progressBar  = document.getElementById('progress-bar');
   const loadingText  = document.getElementById('loading-text');
@@ -75,6 +76,7 @@ function init() {
 
       renderLabels();
       populateFilterList(modelGroup);
+      syncModelPositionEditor();
 
       const overlay = document.getElementById('loading-overlay');
       if (overlay) {
@@ -505,6 +507,94 @@ function initLabelManager() {
     a.click();
     alert('conf.json downloaded! Replace the existing conf.json in your project folder to save these positions permanently.');
   };
+}
+
+// ─── Model Position Editor ────────────────────────────────────
+function initModelPositionEditor() {
+  const select  = document.getElementById('model-select');
+  const inX     = document.getElementById('model-pos-x');
+  const inY     = document.getElementById('model-pos-y');
+  const inZ     = document.getElementById('model-pos-z');
+  const btnReset = document.getElementById('btn-reset-model-pos');
+  const btnLog  = document.getElementById('btn-log-model-pos');
+
+  if (!select) return;
+
+  // Populate dropdown from MODEL_DEFS (available before models load)
+  MODEL_DEFS.forEach((def, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = def.name;
+    select.appendChild(opt);
+  });
+
+  function getSelectedMesh() {
+    const idx = parseInt(select.value);
+    if (isNaN(idx) || !activeModelGroup) return null;
+    return activeModelGroup.children.find(c => c.name === MODEL_DEFS[idx].name) || null;
+  }
+
+  select.onchange = () => {
+    const idx = parseInt(select.value);
+    const hasSelection = !isNaN(idx);
+    inX.disabled = inY.disabled = inZ.disabled = btnReset.disabled = !hasSelection;
+    if (!hasSelection) { inX.value = inY.value = inZ.value = ''; return; }
+
+    const mesh = getSelectedMesh();
+    if (mesh) {
+      inX.value = mesh.position.x.toFixed(3);
+      inY.value = mesh.position.y.toFixed(3);
+      inZ.value = mesh.position.z.toFixed(3);
+    } else {
+      const off = MODEL_DEFS[idx].offset;
+      inX.value = off[0]; inY.value = off[1]; inZ.value = off[2];
+    }
+  };
+
+  function applyPosition() {
+    const idx = parseInt(select.value);
+    if (isNaN(idx)) return;
+    const x = parseFloat(inX.value) || 0;
+    const y = parseFloat(inY.value) || 0;
+    const z = parseFloat(inZ.value) || 0;
+    const mesh = getSelectedMesh();
+    if (mesh) {
+      mesh.position.set(x, y, z);
+      MODEL_DEFS[idx].offset = [x, y, z];
+    }
+  }
+
+  inX.oninput = inY.oninput = inZ.oninput = applyPosition;
+
+  btnReset.onclick = () => {
+    const idx = parseInt(select.value);
+    if (isNaN(idx)) return;
+    const mesh = getSelectedMesh();
+    if (mesh) {
+      mesh.position.set(0, 0, 0);
+      MODEL_DEFS[idx].offset = [0, 0, 0];
+      inX.value = '0'; inY.value = '0'; inZ.value = '0';
+    }
+  };
+
+  btnLog.onclick = () => {
+    if (!activeModelGroup) { console.log('Models not loaded yet'); return; }
+    const positions = MODEL_DEFS.map((def) => {
+      const mesh = activeModelGroup.children.find(c => c.name === def.name);
+      return mesh
+        ? { name: def.name, offset: [+mesh.position.x.toFixed(3), +mesh.position.y.toFixed(3), +mesh.position.z.toFixed(3)] }
+        : { name: def.name, offset: def.offset };
+    });
+    console.log('Current model offsets (paste into MODEL_DEFS):\n', JSON.stringify(positions, null, 2));
+    alert('Model positions logged to browser console (F12 → Console).');
+  };
+}
+
+// Called after models load to sync inputs if a model was already selected
+function syncModelPositionEditor() {
+  const select = document.getElementById('model-select');
+  if (!select || select.value === '') return;
+  select.onchange();
 }
 
 // ─── Filter list ──────────────────────────────────────────────

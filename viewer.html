@@ -105,6 +105,31 @@
         <!-- Dynamically populated by JS based on loaded models -->
       </div>
 
+      <h3>Model Positions</h3>
+      <div class="control-group" id="model-position-editor">
+        <select id="model-select" class="modern-input">
+          <option value="">-- Select Model --</option>
+        </select>
+        <div style="display:flex; gap:6px; margin-top:8px;">
+          <div style="flex:1;">
+            <div style="font-size:0.72rem; color:var(--text-muted); margin-bottom:2px;">X</div>
+            <input type="number" id="model-pos-x" step="0.1" class="modern-input" disabled />
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:0.72rem; color:var(--text-muted); margin-bottom:2px;">Y</div>
+            <input type="number" id="model-pos-y" step="0.1" class="modern-input" disabled />
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:0.72rem; color:var(--text-muted); margin-bottom:2px;">Z</div>
+            <input type="number" id="model-pos-z" step="0.1" class="modern-input" disabled />
+          </div>
+        </div>
+        <div style="display:flex; gap:6px; margin-top:8px;">
+          <button id="btn-reset-model-pos" class="outline-btn" disabled style="flex:1;">Reset</button>
+          <button id="btn-log-model-pos" class="outline-btn" style="flex:1;">Log All</button>
+        </div>
+      </div>
+
       <h3>Label Manager</h3>
       <div class="control-group" id="label-manager-container">
 
