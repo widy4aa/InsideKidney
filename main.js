@@ -375,6 +375,23 @@ function initUI() {
     };
   }
 
+  const btnReadMore = document.getElementById('btn-read-more');
+  if (btnReadMore) {
+    btnReadMore.addEventListener('click', () => {
+      const popup = document.getElementById('info-popup');
+      if (popup) {
+        popup.classList.toggle('expanded');
+        const isExpanded = popup.classList.contains('expanded');
+        const textSpan = document.getElementById('read-more-text');
+        if (textSpan) {
+          const key = isExpanded ? 'read_less' : 'read_more';
+          textSpan.setAttribute('data-i18n', key);
+          textSpan.innerHTML = t(key, getCurrentLang());
+        }
+      }
+    });
+  }
+
   const btnResetCam = document.getElementById('btn-reset-cam');
   const btnHeaderResetCam = document.getElementById('btn-header-reset-cam');
 
@@ -740,7 +757,15 @@ function focusOnPart(part) {
   }
 
   const popup = document.getElementById('info-popup');
-  if (popup) popup.classList.remove('hidden');
+  if (popup) {
+    popup.classList.remove('hidden');
+    popup.classList.remove('expanded'); // Reset expansion state
+    const textSpan = document.getElementById('read-more-text');
+    if (textSpan) {
+      textSpan.setAttribute('data-i18n', 'read_more');
+      textSpan.innerHTML = t('read_more', getCurrentLang());
+    }
+  }
 
   if (activeModelGroup) {
     // Dim all models except the focused one

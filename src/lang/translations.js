@@ -78,6 +78,8 @@ export const TRANSLATIONS = {
     search_ph:       'Search anatomy...',
     loading_text:    'Initializing Medical Interface...',
     loading_models:  'Loading Anatomical Models...',
+    read_more:       'Read More',
+    read_less:       'Read Less',
 
     // ── Quiz Page ───────────────────────────────────────────────────
     quiz_title:      'Kidney Anatomy & Function Quiz',
@@ -165,6 +167,8 @@ export const TRANSLATIONS = {
     search_ph:       'ค้นหากายวิภาค...',
     loading_text:    'กำลังเริ่มต้นระบบทางการแพทย์...',
     loading_models:  'กำลังโหลดโมเดลกายวิภาค...',
+    read_more:       'อ่านเพิ่มเติม',
+    read_less:       'แสดงน้อยลง',
 
     // ── Quiz Page ───────────────────────────────────────────────────
     quiz_title:      'แบบทดสอบกายวิภาคและการทำงานของไต',
