@@ -6,6 +6,7 @@
   <title>InsideKidney - 3D Medical Explorer</title>
   <link rel="stylesheet" href="style.css" />
   <meta name="description" content="Explore kidney anatomy and nephron physiology in an interactive 3D medical simulation." />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body class="medical-theme page-landing">
 
@@ -49,6 +50,18 @@
           <a href="quiz.html" class="btn btn-secondary">
             <span class="btn-icon">📝</span> <span data-i18n="btn_quiz">Take the Quiz</span>
           </a>
+          <button id="openFlipbookHero" class="btn btn-flipbook">
+            <span class="btn-icon">📖</span>
+            <span data-i18n="btn_flipbook">Baca Flipbook</span>
+          </button>
+
+          <!-- Share Button -->
+          <div class="share-wrapper" id="shareWrapper">
+            <button id="shareBtn" class="btn btn-share" aria-label="Bagikan link">
+              <span class="btn-icon">🔗</span>
+              <span data-i18n="btn_share">Bagikan</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -142,9 +155,113 @@
         <h2 data-i18n="cta_h2">Start with the 3D kidney model</h2>
         <p data-i18n="cta_desc">Use the visual explorer first, then return to the quiz for review.</p>
       </div>
-      <a href="viewer.html" class="btn btn-primary" data-i18n="cta_btn">Launch Explorer</a>
+      <div class="cta-actions">
+        <a href="viewer.html" class="btn btn-primary" data-i18n="cta_btn">Launch Explorer</a>
+        <button id="openFlipbookCta" class="btn btn-flipbook">
+          <span class="flipbook-btn-inner">
+            <svg class="flipbook-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 7h7M9 11h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span class="flipbook-btn-text">
+              <span class="flipbook-label">Baca Flipbook</span>
+              <span class="flipbook-sub">Materi PDF Interaktif</span>
+            </span>
+          </span>
+        </button>
+      </div>
     </section>
   </main>
+
+  <!-- ── Share Modal (full-screen) ────────────────────────────────── -->
+  <div id="shareModal" class="share-modal" role="dialog" aria-modal="true" aria-label="Share InsideKidney">
+    <div class="share-modal-backdrop" id="shareModalBackdrop"></div>
+    <div class="share-modal-container">
+      <!-- Header -->
+      <div class="share-modal-header">
+        <div class="share-modal-title-group">
+          <svg class="share-modal-icon" viewBox="0 0 24 24" fill="none">
+            <circle cx="18" cy="5" r="3" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="6" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="18" cy="19" r="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <span class="share-modal-title" data-i18n="share_modal_title">Share InsideKidney</span>
+            <span class="share-modal-subtitle" data-i18n="share_modal_subtitle">Scan QR or copy link below</span>
+          </div>
+        </div>
+        <button id="closeShareModal" class="pdf-close-btn" aria-label="Tutup">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="share-modal-body">
+        <!-- QR Code -->
+        <div class="share-modal-qr-wrap">
+          <div id="shareQrCode"></div>
+          <p class="share-modal-qr-label" data-i18n="share_qr_label">Scan to open on another device</p>
+        </div>
+
+        <!-- Divider -->
+        <div class="share-modal-divider"><span data-i18n="share_or">or</span></div>
+
+        <!-- URL copy row -->
+        <div class="share-modal-url-row">
+          <span class="share-modal-url-text">https://widy4aa.github.io/InsideKidney/</span>
+          <button class="share-modal-copy-btn" id="shareCopyBtn" title="Salin link">
+            <svg class="copy-icon" viewBox="0 0 24 24" fill="none">
+              <rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" style="display:none">
+              <path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="copy-btn-label" data-i18n="share_copy_btn">Copy Link</span>
+          </button>
+        </div>
+        <p class="share-modal-copied-msg" id="shareCopiedMsg" data-i18n="share_copied">✓ Link copied!</p>
+      </div>
+    </div>
+  </div>
+  <div id="flipbookModal" class="pdf-modal" role="dialog" aria-modal="true" aria-label="Flipbook PDF Reader">
+    <div class="pdf-modal-backdrop" id="pdfBackdrop"></div>
+    <div class="pdf-modal-container">
+      <div class="pdf-modal-toolbar">
+        <div class="pdf-toolbar-left">
+          <svg class="pdf-title-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 7h7M9 11h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <span class="pdf-modal-title" data-i18n="flipbook_title">Flipbook</span>
+            <span class="pdf-modal-subtitle" data-i18n="flipbook_subtitle">InsideKidney — PDF Material</span>
+          </div>
+        </div>
+        <div class="pdf-toolbar-right">
+          <a href="Flipbook 3.pdf" download class="pdf-action-btn" data-i18n-title="flipbook_download_title" title="Download PDF">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 4v12m0 0-4-4m4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </a>
+          <button id="closePdfModal" class="pdf-close-btn" aria-label="Tutup">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="pdf-modal-body">
+        <iframe id="pdfFrame" src="" title="Flipbook PDF" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
 
   <script type="module">
     import { getCurrentLang, setCurrentLang, applyTranslations } from './src/lang/translations.js';
@@ -174,6 +291,90 @@
       setCurrentLang(newLang);
       applyTranslations(newLang);
       document.documentElement.lang = newLang === 'th' ? 'th' : 'en';
+    });
+
+    // ── PDF Flipbook Modal ─────────────────────────────────────────
+    const modal      = document.getElementById('flipbookModal');
+    const pdfFrame   = document.getElementById('pdfFrame');
+    const closeBtn   = document.getElementById('closePdfModal');
+    const backdrop   = document.getElementById('pdfBackdrop');
+    const PDF_SRC    = 'Flipbook 3.pdf';
+
+    function openModal() {
+      if (!pdfFrame.src || pdfFrame.src === window.location.href) {
+        pdfFrame.src = PDF_SRC;
+      }
+      modal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('openFlipbookHero').addEventListener('click', openModal);
+    document.getElementById('openFlipbookCta').addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', closeModal);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeShareModal(); } });
+
+    // ── Share Modal & QR Code ──────────────────────────────────────
+    const SHARE_URL       = 'https://widy4aa.github.io/InsideKidney/';
+    const shareBtn        = document.getElementById('shareBtn');
+    const shareModal      = document.getElementById('shareModal');
+    const shareBackdrop   = document.getElementById('shareModalBackdrop');
+    const closeShareBtn   = document.getElementById('closeShareModal');
+    const shareCopyBtn    = document.getElementById('shareCopyBtn');
+    const copiedMsg       = document.getElementById('shareCopiedMsg');
+    let qrGenerated = false;
+
+    function openShareModal() {
+      shareModal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      if (!qrGenerated) {
+        new QRCode(document.getElementById('shareQrCode'), {
+          text: SHARE_URL,
+          width: 360,
+          height: 360,
+          colorDark: '#ffffff',
+          colorLight: '#0a0e1e',
+          correctLevel: QRCode.CorrectLevel.H
+        });
+        qrGenerated = true;
+      }
+    }
+
+    function closeShareModal() {
+      shareModal.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    shareBtn.addEventListener('click', openShareModal);
+    closeShareBtn.addEventListener('click', closeShareModal);
+    shareBackdrop.addEventListener('click', closeShareModal);
+
+    shareCopyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(SHARE_URL);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = SHARE_URL;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      shareCopyBtn.querySelector('.copy-icon').style.display = 'none';
+      shareCopyBtn.querySelector('.check-icon').style.display = 'inline';
+      shareCopyBtn.classList.add('copied');
+      copiedMsg.classList.add('visible');
+      setTimeout(() => {
+        shareCopyBtn.querySelector('.copy-icon').style.display = 'inline';
+        shareCopyBtn.querySelector('.check-icon').style.display = 'none';
+        shareCopyBtn.classList.remove('copied');
+        copiedMsg.classList.remove('visible');
+      }, 2200);
     });
   </script>
 </body>

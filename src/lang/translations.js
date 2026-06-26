@@ -54,6 +54,23 @@ export const TRANSLATIONS = {
     cta_desc:       'Use the visual explorer first, then return to the quiz for review.',
     cta_btn:        'Launch Explorer',
 
+    // ── Index: Flipbook & Share Buttons ─────────────────────────
+    btn_flipbook:   'Read Flipbook',
+    btn_share:      'Share',
+
+    // ── Share Modal ─────────────────────────────────────────
+    share_modal_title:    'Share InsideKidney',
+    share_modal_subtitle: 'Scan QR or copy link below',
+    share_qr_label:       'Scan to open on another device',
+    share_or:             'or',
+    share_copy_btn:       'Copy Link',
+    share_copied:         '\u2713 Link copied!',
+
+    // ── Flipbook Modal ───────────────────────────────────────
+    flipbook_title:          'Flipbook',
+    flipbook_subtitle:       'InsideKidney \u2014 PDF Material',
+    flipbook_download_title: 'Download PDF',
+
     // ── Viewer: Sidebar / Controls ──────────────────────────────────
     sidebar_anatomy: 'Anatomy',
     ctrl_title:      'Visualization Controls',
@@ -143,6 +160,23 @@ export const TRANSLATIONS = {
     cta_desc:       'ใช้ตัวสำรวจภาพก่อน แล้วกลับมาทำแบบทดสอบเพื่อทบทวน',
     cta_btn:        'เปิด Explorer',
 
+    // ── Index: Flipbook & Share Buttons ─────────────────────────
+    btn_flipbook:   'อ่าน Flipbook',
+    btn_share:      'แชร์',
+
+    // ── Share Modal ─────────────────────────────────────────
+    share_modal_title:    'แชร์ InsideKidney',
+    share_modal_subtitle: 'สแกน QR หรือคัดลอกลิงก์ด้านล่าง',
+    share_qr_label:       'สแกนเพื่อเปิดบนอุปกรณ์อื่น',
+    share_or:             'หรือ',
+    share_copy_btn:       'คัดลอกลิงก์',
+    share_copied:         '\u2713 คัดลอกลิงก์แล้ว!',
+
+    // ── Flipbook Modal ───────────────────────────────────────
+    flipbook_title:          'Flipbook',
+    flipbook_subtitle:       'InsideKidney \u2014 เอกสาร PDF',
+    flipbook_download_title: 'ดาวน์โหลด PDF',
+
     // ── Viewer: Sidebar / Controls ──────────────────────────────────
     sidebar_anatomy: 'กายวิภาค',
     ctrl_title:      'การควบคุมการแสดงผล',
@@ -209,5 +243,9 @@ export function applyTranslations(lang = getCurrentLang()) {
   document.querySelectorAll('[data-i18n-ph]').forEach(el => {
     const key = el.dataset.i18nPh;
     el.placeholder = t(key, lang);
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const key = el.dataset.i18nTitle;
+    el.title = t(key, lang);
   });
 }
