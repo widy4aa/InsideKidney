@@ -40,7 +40,7 @@ const arState = {
   active: false,
   stream: null,
   scale: 0.8,
-  opacity: 0.9,
+  opacity: 1,
   angle: 'front',
   launchRequested: false,
   orientationEnabled: false,
@@ -348,6 +348,8 @@ function initUI() {
     focusOnPart(e.detail);
   });
 
+  initMobileAnatomyDrawer();
+
   const anatomyList = document.getElementById('anatomy-list');
   if (anatomyList) {
     anatomyList.innerHTML = '';
@@ -362,7 +364,10 @@ function initUI() {
           <p>${partCategory(part) || 'Custom'}</p>
         </div>
       `;
-      card.onclick = () => focusOnPart(part);
+      card.onclick = () => {
+        focusOnPart(part);
+        closeMobileAnatomyDrawer();
+      };
       anatomyList.appendChild(card);
     });
   }
@@ -475,6 +480,37 @@ function initUI() {
       toggleObjectVisibilityByName('Urinary Collecting System', e.target.checked);
     });
   }
+}
+
+function initMobileAnatomyDrawer() {
+  const burger = document.getElementById('btn-hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('mobile-overlay');
+  if (!burger || !sidebar || burger.dataset.anatomyBound === '1') return;
+
+  burger.dataset.anatomyBound = '1';
+  burger.setAttribute('aria-expanded', 'false');
+  burger.setAttribute('aria-controls', 'sidebar');
+
+  burger.addEventListener('click', () => {
+    const open = !sidebar.classList.contains('mobile-open');
+    sidebar.classList.toggle('mobile-open', open);
+    overlay?.classList.toggle('active', open);
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  overlay?.addEventListener('click', closeMobileAnatomyDrawer);
+}
+
+function closeMobileAnatomyDrawer() {
+  const burger = document.getElementById('btn-hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('mobile-overlay');
+  sidebar?.classList.remove('mobile-open');
+  overlay?.classList.remove('active');
+  burger?.classList.remove('open');
+  burger?.setAttribute('aria-expanded', 'false');
 }
 
 // ─── AR Camera Mode ──────────────────────────────────────────
@@ -697,8 +733,9 @@ function applyARPresentation() {
       return false;
     });
     const baseOpacity = parentPart ? parentPart.opacity : 1;
-    mesh.material.opacity = arState.active ? Math.min(baseOpacity, arState.opacity) : baseOpacity;
+    mesh.material.opacity = arState.active ? Math.max(baseOpacity, arState.opacity) : baseOpacity;
     mesh.material.transparent = mesh.material.opacity < 1.0;
+    mesh.material.depthWrite = mesh.material.opacity >= 1.0;
     mesh.material.needsUpdate = true;
   });
 }
@@ -1160,8 +1197,9 @@ function clearFocusMode() {
     if (def) {
       child.traverse(mesh => {
         if (!mesh.isMesh || !mesh.material) return;
-        mesh.material.opacity = arState.active ? Math.min(def.opacity, arState.opacity) : def.opacity;
+        mesh.material.opacity = arState.active ? Math.max(def.opacity, arState.opacity) : def.opacity;
         mesh.material.transparent = mesh.material.opacity < 1.0;
+        mesh.material.depthWrite = mesh.material.opacity >= 1.0;
         mesh.material.needsUpdate = true;
       });
     }

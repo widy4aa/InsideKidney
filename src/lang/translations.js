@@ -74,6 +74,11 @@ export const TRANSLATIONS = {
     flipbook_title:          'Flipbook',
     flipbook_subtitle:       'InsideKidney \u2014 PDF Material',
     flipbook_download_title: 'Download PDF',
+    flipbook_loading:        'Loading flipbook...',
+    flipbook_error:          'Flipbook failed to load.',
+    flipbook_open_pdf:       'Open PDF',
+    flipbook_prev:           'Previous page',
+    flipbook_next:           'Next page',
 
     // ── Viewer: Sidebar / Controls ──────────────────────────────────
     sidebar_anatomy: 'Anatomy',
@@ -200,6 +205,11 @@ export const TRANSLATIONS = {
     flipbook_title:          'Flipbook',
     flipbook_subtitle:       'InsideKidney \u2014 เอกสาร PDF',
     flipbook_download_title: 'ดาวน์โหลด PDF',
+    flipbook_loading:        'กำลังโหลด Flipbook...',
+    flipbook_error:          'โหลด Flipbook ไม่สำเร็จ',
+    flipbook_open_pdf:       'เปิด PDF',
+    flipbook_prev:           'หน้าก่อนหน้า',
+    flipbook_next:           'หน้าถัดไป',
 
     // ── Viewer: Sidebar / Controls ──────────────────────────────────
     sidebar_anatomy: 'กายวิภาค',

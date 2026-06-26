@@ -266,13 +266,29 @@
         </div>
       </div>
       <div class="pdf-modal-body">
-        <iframe id="pdfFrame" src="" title="Flipbook PDF" allowfullscreen></iframe>
+        <div id="flipbookStage" class="flipbook-stage">
+          <div id="flipbookLoading" class="flipbook-loading" data-i18n="flipbook_loading">Loading flipbook...</div>
+          <canvas id="flipbookCanvas" class="flipbook-canvas"></canvas>
+        </div>
+        <div class="flipbook-controls" aria-label="Flipbook controls">
+          <button id="flipPrev" class="pdf-action-btn" type="button" data-i18n-title="flipbook_prev" title="Previous page">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <span id="flipPageInfo" class="flipbook-page-info">0 / 0</span>
+          <button id="flipNext" class="pdf-action-btn" type="button" data-i18n-title="flipbook_next" title="Next page">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="m9 6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
   <script type="module">
-    import { getCurrentLang, setCurrentLang, applyTranslations } from './src/lang/translations.js';
+    import { getCurrentLang, setCurrentLang, applyTranslations, t } from './src/lang/translations.js';
 
     // ── Hamburger ──────────────────────────────────────────────────
     const burger = document.getElementById('hamburger');
@@ -302,18 +318,93 @@
     });
 
     // ── PDF Flipbook Modal ─────────────────────────────────────────
-    const modal      = document.getElementById('flipbookModal');
-    const pdfFrame   = document.getElementById('pdfFrame');
-    const closeBtn   = document.getElementById('closePdfModal');
-    const backdrop   = document.getElementById('pdfBackdrop');
-    const PDF_SRC    = 'Flipbook 3.pdf';
+    const modal       = document.getElementById('flipbookModal');
+    const canvas      = document.getElementById('flipbookCanvas');
+    const loadingEl   = document.getElementById('flipbookLoading');
+    const pageInfo    = document.getElementById('flipPageInfo');
+    const prevBtn     = document.getElementById('flipPrev');
+    const nextBtn     = document.getElementById('flipNext');
+    const closeBtn    = document.getElementById('closePdfModal');
+    const backdrop    = document.getElementById('pdfBackdrop');
+    const PDF_SRC     = 'Flipbook%203.pdf';
+    const PDFJS_SRC   = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.mjs';
+    const PDF_WORKER  = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs';
+    let pdfDoc = null;
+    let pdfjsLib = null;
+    let currentPage = 1;
+    let renderTask = null;
 
-    function openModal() {
-      if (!pdfFrame.src || pdfFrame.src === window.location.href) {
-        pdfFrame.src = PDF_SRC;
+    async function loadPdfJs() {
+      if (pdfjsLib) return pdfjsLib;
+      pdfjsLib = await import(PDFJS_SRC);
+      pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER;
+      return pdfjsLib;
+    }
+
+    async function ensureFlipbookLoaded() {
+      if (pdfDoc) return;
+      loadingEl.classList.remove('hidden');
+      loadingEl.textContent = t('flipbook_loading');
+      const pdfjs = await loadPdfJs();
+      pdfDoc = await pdfjs.getDocument(PDF_SRC).promise;
+      currentPage = 1;
+    }
+
+    async function renderFlipbookPage(pageNumber = currentPage) {
+      if (!pdfDoc) return;
+      if (renderTask) {
+        renderTask.promise.catch(() => {});
+        renderTask.cancel();
+        renderTask = null;
       }
+
+      currentPage = Math.min(Math.max(pageNumber, 1), pdfDoc.numPages);
+      const page = await pdfDoc.getPage(currentPage);
+      const stage = document.getElementById('flipbookStage');
+      const baseViewport = page.getViewport({ scale: 1 });
+      const maxWidth = Math.max(stage.clientWidth - 36, 280);
+      const maxHeight = Math.max(stage.clientHeight - 36, 320);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const cssScale = Math.min(maxWidth / baseViewport.width, maxHeight / baseViewport.height);
+      const viewport = page.getViewport({ scale: cssScale * dpr });
+      const ctx = canvas.getContext('2d');
+
+      canvas.width = Math.floor(viewport.width);
+      canvas.height = Math.floor(viewport.height);
+      canvas.style.width = `${Math.floor(viewport.width / dpr)}px`;
+      canvas.style.height = `${Math.floor(viewport.height / dpr)}px`;
+
+      canvas.classList.remove('is-turning');
+      void canvas.offsetWidth;
+      canvas.classList.add('is-turning');
+
+      renderTask = page.render({ canvasContext: ctx, viewport });
+      await renderTask.promise.catch((err) => {
+        if (err?.name !== 'RenderingCancelledException') throw err;
+      });
+      renderTask = null;
+      loadingEl.classList.add('hidden');
+      updateFlipbookControls();
+    }
+
+    function updateFlipbookControls() {
+      const total = pdfDoc ? pdfDoc.numPages : 0;
+      pageInfo.textContent = `${currentPage} / ${total}`;
+      prevBtn.disabled = !pdfDoc || currentPage <= 1;
+      nextBtn.disabled = !pdfDoc || currentPage >= total;
+    }
+
+    async function openModal() {
       modal.classList.add('is-open');
       document.body.style.overflow = 'hidden';
+      try {
+        await ensureFlipbookLoaded();
+        await renderFlipbookPage(currentPage);
+      } catch (err) {
+        console.error('Failed to open flipbook', err);
+        loadingEl.classList.remove('hidden');
+        loadingEl.innerHTML = `${t('flipbook_error')} <a href="${PDF_SRC}" target="_blank" rel="noopener">${t('flipbook_open_pdf')}</a>`;
+      }
     }
 
     function closeModal() {
@@ -321,6 +412,11 @@
       document.body.style.overflow = '';
     }
 
+    prevBtn.addEventListener('click', () => renderFlipbookPage(currentPage - 1));
+    nextBtn.addEventListener('click', () => renderFlipbookPage(currentPage + 1));
+    window.addEventListener('resize', () => {
+      if (modal.classList.contains('is-open') && pdfDoc) renderFlipbookPage(currentPage);
+    });
     document.getElementById('openFlipbookHero').addEventListener('click', openModal);
     document.getElementById('openFlipbookCta').addEventListener('click', openModal);
     closeBtn.addEventListener('click', closeModal);
