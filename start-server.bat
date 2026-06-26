@@ -1,28 +1,30 @@
 @echo off
 echo ===================================
-echo   3D Plant Cell - Local Server
+echo   InsideKidney - Local Server
 echo ===================================
 echo.
 
 :: Try Python (paling umum tersedia)
 python --version >nul 2>&1
 IF %ERRORLEVEL% == 0 (
-    echo Menjalankan server dengan Python...
+    echo Menjalankan InsideKidney server dengan Python...
     echo Buka browser: http://localhost:8000
+    echo 3D Explorer: http://localhost:8000/viewer.html
     echo Tekan Ctrl+C untuk berhenti.
     echo.
-    python -m http.server 8000
+    python server.py --host 127.0.0.1 --port 8000
     goto :end
 )
 
 :: Coba Python3
 python3 --version >nul 2>&1
 IF %ERRORLEVEL% == 0 (
-    echo Menjalankan server dengan Python3...
+    echo Menjalankan InsideKidney server dengan Python3...
     echo Buka browser: http://localhost:8000
+    echo 3D Explorer: http://localhost:8000/viewer.html
     echo Tekan Ctrl+C untuk berhenti.
     echo.
-    python3 -m http.server 8000
+    python3 server.py --host 127.0.0.1 --port 8000
     goto :end
 )
 

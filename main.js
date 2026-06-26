@@ -18,6 +18,8 @@ let scene, camera, renderer, labelRenderer, controls;
 let activeModelGroup = null;
 let KIDNEY_PARTS = [];
 let labelObjects = []; // { part, css2dObj, el }
+let defaultSceneBackground = null;
+let defaultSceneFog = null;
 
 // ─── Edit / Drag State ───────────────────────────────────────
 let isEditMode = false;   // controlled by the toggle in the sidebar
@@ -31,6 +33,24 @@ const camAnim = {
   targetPos: new THREE.Vector3(),   // where camera should end up
   targetPiv: new THREE.Vector3(),   // where controls.target should end up
   speed:     0.08,                  // lerp factor per frame (0–1), higher = faster
+};
+
+// ─── AR Camera Mode State ─────────────────────────────────────
+const arState = {
+  active: false,
+  stream: null,
+  scale: 0.8,
+  opacity: 0.9,
+  angle: 'front',
+  launchRequested: false,
+  orientationEnabled: false,
+  baseAlpha: null,
+  baseBeta: null,
+  baseGamma: null,
+  yaw: 0,
+  pitch: 0,
+  target: new THREE.Vector3(),
+  radius: 5,
 };
 
 // ─── Config ──────────────────────────────────────────────────
@@ -49,6 +69,8 @@ function init() {
   const container = document.getElementById('viewer-container');
 
   scene = createScene();
+  defaultSceneBackground = scene.background ? scene.background.clone() : null;
+  defaultSceneFog = scene.fog ? scene.fog.clone() : null;
   camera = createCamera(container);
 
   const renderers = createRenderers(container);
@@ -67,6 +89,8 @@ function init() {
   initLabelManager();
   initDragSystem();
   initModelPositionEditor();
+  initARControls();
+  initARLaunchMode();
 
   const progressBar  = document.getElementById('progress-bar');
   const loadingText  = document.getElementById('loading-text');
@@ -93,6 +117,8 @@ function init() {
       renderLabels();
       populateFilterList(modelGroup);
       syncModelPositionEditor();
+      applyARPresentation();
+      if (arState.launchRequested) prepareARLaunch();
 
       const overlay = document.getElementById('loading-overlay');
       if (overlay) {
@@ -350,6 +376,10 @@ function initUI() {
       renderLabels();
       // Refresh anatomy sidebar list
       initUI();
+      const btnAR = document.getElementById('btn-toggle-ar');
+      if (btnAR) btnAR.textContent = arState.active ? t('btn_ar_stop') : t('btn_ar_start');
+      const btnQuickStart = document.getElementById('ar-quick-start');
+      if (btnQuickStart) btnQuickStart.textContent = t('btn_ar_start');
     });
   }
 
@@ -445,6 +475,311 @@ function initUI() {
       toggleObjectVisibilityByName('Urinary Collecting System', e.target.checked);
     });
   }
+}
+
+// ─── AR Camera Mode ──────────────────────────────────────────
+function initARControls() {
+  const btnToggle = document.getElementById('btn-toggle-ar');
+  const btnQuickStart = document.getElementById('ar-quick-start');
+  const scaleInput = document.getElementById('ar-scale');
+  const opacityInput = document.getElementById('ar-opacity');
+  const presetButtons = document.querySelectorAll('.ar-preset');
+
+  if (!btnToggle && !btnQuickStart) return;
+
+  const toggleAR = () => {
+    if (arState.active) {
+      stopARMode();
+    } else {
+      startARMode();
+    }
+  };
+
+  if (btnToggle) btnToggle.addEventListener('click', toggleAR);
+  if (btnQuickStart) btnQuickStart.addEventListener('click', startARMode);
+
+  if (scaleInput) {
+    arState.scale = parseFloat(scaleInput.value) || arState.scale;
+    scaleInput.addEventListener('input', () => {
+      arState.scale = parseFloat(scaleInput.value) || arState.scale;
+      applyARPresentation();
+      if (arState.active) applyARCameraAngle(arState.angle);
+    });
+  }
+
+  if (opacityInput) {
+    arState.opacity = parseFloat(opacityInput.value) || arState.opacity;
+    opacityInput.addEventListener('input', () => {
+      arState.opacity = parseFloat(opacityInput.value) || arState.opacity;
+      applyARPresentation();
+    });
+  }
+
+  presetButtons.forEach((button) => {
+    button.setAttribute('aria-pressed', button.classList.contains('active') ? 'true' : 'false');
+    button.addEventListener('click', () => {
+      setARAngle(button.dataset.arAngle || 'front');
+    });
+  });
+}
+
+function initARLaunchMode() {
+  const params = new URLSearchParams(window.location.search);
+  arState.launchRequested = params.get('mode') === 'ar' || params.has('ar');
+  if (arState.launchRequested) prepareARLaunch();
+}
+
+function prepareARLaunch() {
+  const btnQuickStart = document.getElementById('ar-quick-start');
+  if (btnQuickStart && !arState.active) {
+    btnQuickStart.classList.remove('hidden');
+    btnQuickStart.textContent = t('btn_ar_start');
+  }
+
+  const rightSidebar = document.getElementById('right-sidebar');
+  if (rightSidebar && window.innerWidth > 768) rightSidebar.classList.remove('hidden');
+
+  if (!arState.active) showARStatus(t('ar_launch_hint'));
+  setARAngle(arState.angle);
+}
+
+async function startARMode() {
+  const video = document.getElementById('ar-camera-feed');
+  const btnToggle = document.getElementById('btn-toggle-ar');
+  const btnQuickStart = document.getElementById('ar-quick-start');
+  if (!video || arState.active) return;
+
+  if (!window.isSecureContext) {
+    showARStatus(t('ar_requires_https'));
+    return;
+  }
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    showARStatus(t('ar_camera_unsupported'));
+    return;
+  }
+
+  if (btnToggle) {
+    btnToggle.disabled = true;
+    btnToggle.textContent = t('ar_starting');
+  }
+  if (btnQuickStart) {
+    btnQuickStart.disabled = true;
+    btnQuickStart.textContent = t('ar_starting');
+  }
+
+  try {
+    const hasMotionAccess = await requestDeviceMotionAccess();
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: { ideal: 'environment' },
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
+      },
+      audio: false,
+    });
+
+    arState.stream = stream;
+    arState.active = true;
+    video.srcObject = stream;
+    await video.play();
+
+    document.body.classList.add('ar-mode');
+    scene.background = null;
+    scene.fog = null;
+    renderer.setClearAlpha(0);
+    applyARPresentation();
+    applyARCameraAngle(arState.angle);
+    if (btnQuickStart) btnQuickStart.classList.add('hidden');
+
+    if (hasMotionAccess) {
+      enableAROrientation();
+      showARStatus(t('ar_motion_active'));
+    } else {
+      showARStatus(t('ar_motion_unavailable'));
+    }
+  } catch (err) {
+    console.error('Unable to start AR camera mode', err);
+    showARStatus(t('ar_camera_error'));
+    stopARStream();
+  } finally {
+    if (btnToggle) {
+      btnToggle.disabled = false;
+      btnToggle.textContent = arState.active ? t('btn_ar_stop') : t('btn_ar_start');
+    }
+    if (btnQuickStart) {
+      btnQuickStart.disabled = false;
+      btnQuickStart.textContent = t('btn_ar_start');
+      btnQuickStart.classList.toggle('hidden', arState.active || !arState.launchRequested);
+    }
+  }
+}
+
+function stopARMode() {
+  stopARStream();
+  disableAROrientation();
+  arState.active = false;
+  document.body.classList.remove('ar-mode');
+  scene.background = defaultSceneBackground ? defaultSceneBackground.clone() : null;
+  scene.fog = defaultSceneFog ? defaultSceneFog.clone() : null;
+  renderer.setClearAlpha(1);
+
+  if (activeModelGroup) activeModelGroup.scale.setScalar(1);
+  clearFocusMode();
+
+  const btnToggle = document.getElementById('btn-toggle-ar');
+  if (btnToggle) btnToggle.textContent = t('btn_ar_start');
+  const btnQuickStart = document.getElementById('ar-quick-start');
+  if (btnQuickStart) btnQuickStart.classList.toggle('hidden', !arState.launchRequested);
+  showARStatus('');
+}
+
+function stopARStream() {
+  if (arState.stream) {
+    arState.stream.getTracks().forEach(track => track.stop());
+    arState.stream = null;
+  }
+
+  const video = document.getElementById('ar-camera-feed');
+  if (video) video.srcObject = null;
+}
+
+function setARAngle(angle) {
+  arState.angle = angle;
+  document.querySelectorAll('.ar-preset').forEach((button) => {
+    const isActive = button.dataset.arAngle === angle;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+  applyARCameraAngle(angle);
+}
+
+function applyARCameraAngle(angle) {
+  if (!activeModelGroup) return;
+
+  const box = new THREE.Box3().setFromObject(activeModelGroup);
+  const center = box.getCenter(new THREE.Vector3());
+  const size = box.getSize(new THREE.Vector3());
+  const maxDim = Math.max(size.x, size.y, size.z, 1);
+  const distance = Math.max(maxDim * 1.25, 4);
+
+  arState.target.copy(center);
+  arState.radius = distance;
+
+  camAnim.targetPiv.copy(center);
+  if (arState.active && arState.orientationEnabled) {
+    updateAROrientationCamera();
+    return;
+  }
+
+  if (angle === 'top') {
+    camAnim.targetPos.set(center.x, center.y + distance, center.z + distance * 0.15);
+  } else if (angle === 'side') {
+    camAnim.targetPos.set(center.x + distance, center.y + distance * 0.12, center.z);
+  } else {
+    camAnim.targetPos.set(center.x, center.y, center.z + distance);
+  }
+  camAnim.active = true;
+}
+
+function applyARPresentation() {
+  if (!activeModelGroup) return;
+
+  activeModelGroup.scale.setScalar(arState.active ? arState.scale : 1);
+  activeModelGroup.traverse((mesh) => {
+    if (!mesh.isMesh || !mesh.material) return;
+    const parentPart = MODEL_DEFS.find(def => {
+      let node = mesh;
+      while (node) {
+        if (node.name === def.name) return true;
+        node = node.parent;
+      }
+      return false;
+    });
+    const baseOpacity = parentPart ? parentPart.opacity : 1;
+    mesh.material.opacity = arState.active ? Math.min(baseOpacity, arState.opacity) : baseOpacity;
+    mesh.material.transparent = mesh.material.opacity < 1.0;
+    mesh.material.needsUpdate = true;
+  });
+}
+
+async function requestDeviceMotionAccess() {
+  if (typeof DeviceOrientationEvent === 'undefined') return false;
+
+  if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+    try {
+      const result = await DeviceOrientationEvent.requestPermission();
+      return result === 'granted';
+    } catch (err) {
+      console.warn('Device orientation permission rejected', err);
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function enableAROrientation() {
+  if (arState.orientationEnabled) return;
+  arState.orientationEnabled = true;
+  arState.baseAlpha = null;
+  arState.baseBeta = null;
+  arState.baseGamma = null;
+  arState.yaw = 0;
+  arState.pitch = 0;
+  controls.enabled = false;
+  camAnim.active = false;
+  window.addEventListener('deviceorientation', onDeviceOrientation, true);
+}
+
+function disableAROrientation() {
+  if (!arState.orientationEnabled) return;
+  arState.orientationEnabled = false;
+  window.removeEventListener('deviceorientation', onDeviceOrientation, true);
+  controls.enabled = true;
+}
+
+function onDeviceOrientation(event) {
+  if (!arState.active || !arState.orientationEnabled) return;
+  const alpha = event.alpha ?? 0;
+  const beta = event.beta ?? 0;
+  const gamma = event.gamma ?? 0;
+
+  if (arState.baseAlpha === null) {
+    arState.baseAlpha = alpha;
+    arState.baseBeta = beta;
+    arState.baseGamma = gamma;
+  }
+
+  const yawDeg = shortestAngleDelta(alpha, arState.baseAlpha) + (gamma - arState.baseGamma) * 0.35;
+  const pitchDeg = beta - arState.baseBeta;
+  arState.yaw = THREE.MathUtils.degToRad(yawDeg);
+  arState.pitch = THREE.MathUtils.clamp(THREE.MathUtils.degToRad(pitchDeg), -1.05, 1.05);
+}
+
+function shortestAngleDelta(current, base) {
+  return ((current - base + 540) % 360) - 180;
+}
+
+function updateAROrientationCamera() {
+  if (!activeModelGroup) return;
+  const target = arState.target;
+  const radius = arState.radius;
+  const cosPitch = Math.cos(arState.pitch);
+
+  camera.position.set(
+    target.x + Math.sin(arState.yaw) * cosPitch * radius,
+    target.y + Math.sin(arState.pitch) * radius,
+    target.z + Math.cos(arState.yaw) * cosPitch * radius
+  );
+  camera.lookAt(target);
+}
+
+function showARStatus(message) {
+  const status = document.getElementById('ar-status');
+  if (!status) return;
+  status.textContent = message;
+  status.classList.toggle('hidden', !message);
 }
 
 // ─── Label Manager ────────────────────────────────────────────
@@ -825,8 +1160,8 @@ function clearFocusMode() {
     if (def) {
       child.traverse(mesh => {
         if (!mesh.isMesh || !mesh.material) return;
-        mesh.material.opacity = def.opacity;
-        mesh.material.transparent = def.opacity < 1.0;
+        mesh.material.opacity = arState.active ? Math.min(def.opacity, arState.opacity) : def.opacity;
+        mesh.material.transparent = mesh.material.opacity < 1.0;
         mesh.material.needsUpdate = true;
       });
     }
@@ -849,8 +1184,12 @@ function updateCameraOverlay() {
 function animate() {
   requestAnimationFrame(animate);
 
+  if (arState.active && arState.orientationEnabled) {
+    updateAROrientationCamera();
+  }
+
   // Smooth camera fly-in (lerp toward camAnim targets)
-  if (camAnim.active) {
+  if (camAnim.active && !(arState.active && arState.orientationEnabled)) {
     camera.position.lerp(camAnim.targetPos, camAnim.speed);
     controls.target.lerp(camAnim.targetPiv, camAnim.speed);
 
@@ -865,7 +1204,7 @@ function animate() {
     }
   }
 
-  controls.update();
+  if (!(arState.active && arState.orientationEnabled)) controls.update();
   updateCameraOverlay();
   renderer.render(scene, camera);
   labelRenderer.render(scene, camera);

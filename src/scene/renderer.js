@@ -13,11 +13,12 @@ export function createRenderers(container) {
   // WebGL Renderer
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
-    alpha: false,
+    alpha: true,
     powerPreference: 'high-performance',  // Tell GPU driver to use fast mode
     stencil: false,                        // Disable unused stencil buffer
     depth: true,
   });
+  renderer.setClearAlpha(1);
   // Cap pixel ratio at 1.5 — going to 2x doubles GPU work for minimal gain
   const dpr = Math.min(window.devicePixelRatio, 1.5);
   renderer.setPixelRatio(dpr);

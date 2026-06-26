@@ -228,6 +228,19 @@ body.page-viewer {
   background: rgba(0, 229, 255, 0.2);
 }
 
+.btn-ar {
+  background: rgba(255, 209, 102, 0.1);
+  color: #ffd166;
+  border: 1px solid rgba(255, 209, 102, 0.55);
+  box-shadow: 0 0 14px rgba(255, 209, 102, 0.16);
+}
+
+.btn-ar:hover {
+  background: rgba(255, 209, 102, 0.18);
+  border-color: rgba(255, 209, 102, 0.8);
+  box-shadow: 0 0 24px rgba(255, 209, 102, 0.28);
+}
+
 /* ── Flipbook Button ───────────────────────────────────────────── */
 .btn-flipbook {
   background: linear-gradient(135deg, rgba(255, 180, 50, 0.12) 0%, rgba(255, 100, 20, 0.08) 100%);
@@ -751,7 +764,7 @@ body.page-viewer {
   width: min(1180px, calc(100% - 48px));
   margin: 0 auto 76px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   border: 1px solid var(--border-dim);
   background: rgba(10, 15, 30, 0.58);
   backdrop-filter: blur(10px);
@@ -1119,6 +1132,115 @@ body.page-viewer {
   flex: 1;
   position: relative;
   background: radial-gradient(circle at center, #0a0f1e 0%, #03050a 100%);
+  overflow: hidden;
+}
+
+.viewer-container canvas,
+#label-renderer-layer {
+  position: relative;
+  z-index: 2;
+}
+
+.ar-camera-feed {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: 0;
+  pointer-events: none;
+}
+
+body.ar-mode .viewer-container {
+  background: #000;
+}
+
+body.ar-mode .ar-camera-feed {
+  opacity: 1;
+}
+
+.ar-status {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 95;
+  max-width: min(520px, calc(100% - 32px));
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 209, 102, 0.45);
+  border-radius: 8px;
+  background: rgba(20, 15, 6, 0.82);
+  color: #ffd166;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.ar-quick-start {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  z-index: 96;
+  min-width: min(280px, calc(100% - 40px));
+  padding: 13px 20px;
+  border: 1px solid rgba(255, 209, 102, 0.75);
+  border-radius: 8px;
+  background: rgba(255, 209, 102, 0.95);
+  color: #050816;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.45), 0 0 24px rgba(255, 209, 102, 0.28);
+}
+
+body.ar-mode .ar-quick-start {
+  display: none !important;
+}
+
+.ar-control-group {
+  gap: 10px;
+}
+
+.ar-preset-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.ar-preset-row .outline-btn {
+  width: 100%;
+  min-width: 0;
+  padding-inline: 6px;
+}
+
+.ar-preset.active,
+.ar-preset[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--bg-core);
+}
+
+.range-control {
+  display: grid !important;
+  grid-template-columns: 1fr;
+  gap: 6px !important;
+  color: var(--text-muted);
+}
+
+.range-control input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.control-hint {
+  white-space: normal;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  line-height: 1.45;
 }
 
 .camera-info {

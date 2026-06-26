@@ -60,6 +60,9 @@
 
     <!-- 3D Canvas Area -->
     <section class="viewer-container" id="viewer-container">
+      <video id="ar-camera-feed" class="ar-camera-feed" autoplay muted playsinline></video>
+      <div id="ar-status" class="ar-status hidden" role="status"></div>
+      <button id="ar-quick-start" class="ar-quick-start hidden" data-i18n="btn_ar_start">Start AR Camera</button>
       
       <!-- Camera Floating Overlay -->
       <div id="camera-overlay" class="camera-info glass-panel">
@@ -112,6 +115,25 @@
         <label><input type="checkbox" id="toggle-blood" checked /> <span data-i18n="ctrl_blood">Show Artery &amp; Vein</span></label>
         <label><input type="checkbox" id="toggle-urine" checked /> <span data-i18n="ctrl_urine">Show Urinary Collecting System</span></label>
         <label><input type="checkbox" id="toggle-labels" checked /> <span data-i18n="ctrl_labels">Show Labels</span></label>
+      </div>
+
+      <h3 data-i18n="ar_title">AR Camera Mode</h3>
+      <div class="control-group ar-control-group">
+        <button id="btn-toggle-ar" class="outline-btn" data-i18n="btn_ar_start">Start AR Camera</button>
+        <div class="ar-preset-row" aria-label="AR camera angle presets">
+          <button class="outline-btn ar-preset active" data-ar-angle="front" data-i18n="ar_front">Front</button>
+          <button class="outline-btn ar-preset" data-ar-angle="top" data-i18n="ar_top">Top</button>
+          <button class="outline-btn ar-preset" data-ar-angle="side" data-i18n="ar_side">Side</button>
+        </div>
+        <label class="range-control" for="ar-scale">
+          <span data-i18n="ar_scale">Model Scale</span>
+          <input type="range" id="ar-scale" min="0.4" max="1.8" step="0.05" value="0.8" />
+        </label>
+        <label class="range-control" for="ar-opacity">
+          <span data-i18n="ar_opacity">Model Opacity</span>
+          <input type="range" id="ar-opacity" min="0.35" max="1" step="0.05" value="0.9" />
+        </label>
+        <p id="ar-help" class="control-hint" data-i18n="ar_help">Uses your device camera as the 3D background. Best on HTTPS or localhost.</p>
       </div>
       
       <h3 data-i18n="filter_title">Filter Objects</h3>
